@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // parse requests of content-type - application/json
 app.use(bodyParser.json())
     // app.get('/', (req, res) => {
-    //     // const uri = 'mongodb+srv://hmdawood:Dawood_TechMate@cluster0.atars.mongodb.net/falak?retryWrites=true&w=majority';
+    //     // const uri = 'mongodb+srv://ourdbuser:ourdbpassword@cluster0.atars.mongodb.net/repo?retryWrites=true&w=majority';
     //     // mongoose.connect(uri, {
     //     //         useNewUrlParser: true,
     //     //         useUnifiedTopology: true

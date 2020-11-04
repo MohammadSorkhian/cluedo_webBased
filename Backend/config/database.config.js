@@ -1,3 +1,3 @@
 module.exports = {
-    url: 'mongodb+srv://ourdbuser:ourdbpassword@cluster0.atars.mongodb.net/repo?retryWrites=true&w=majority'
+    url: 'mongodb+srv://miaftab:Windows_5300@universityprojectcluste.1dds7.mongodb.net/test'
 }

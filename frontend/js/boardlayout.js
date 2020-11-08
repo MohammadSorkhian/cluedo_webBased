@@ -4,6 +4,7 @@ var ctx = c.getContext("2d");
 ctx.canvas.width  = 960;
 ctx.canvas.height = 960;
 
+
 // Create gradient
 var grd = ctx.createLinearGradient(0,0,2000,2000);
 grd.addColorStop(0,"white");

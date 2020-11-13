@@ -19,7 +19,7 @@ mongoose.connect(dbConfig.url, {
 });
 
 // Add headers
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Origin,Access-Control-Allow-Methods,Access-Control-Allow-Headers,Content-Type,Authorization');
@@ -38,5 +38,6 @@ app.use(bodyParser.json())
 require('./routes/routes')(app);
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+    console.log(`app listening at http://localhost:${port}`)
 })
+

@@ -32,65 +32,65 @@ class Board {
 
         // SET UP HALL ROOM
         let hall = new Room('HALL',0,6,9,14,6,9);
-        for(let r=study.startRowIndex;r<=study.endRowIndex;r++){
-            for(let c=study.startColumnIndex;c<=study.endColumnIndex;c++){
-                this.BOARD[r][c] = study;
+        for(let r=hall.startRowIndex;r<=hall.endRowIndex;r++){
+            for(let c=hall.startColumnIndex;c<=hall.endColumnIndex;c++){
+                this.BOARD[r][c] = hall;
             }
         }
 
         // SET UP LOUNGE ROOM
         let lounge = new Room('LOUNGE',0,4,17,23,4,23);
-        for(let r=study.startRowIndex;r<=study.endRowIndex;r++){
-            for(let c=study.startColumnIndex;c<=study.endColumnIndex;c++){
-                this.BOARD[r][c] = study;
+        for(let r=lounge.startRowIndex;r<=lounge.endRowIndex;r++){
+            for(let c=lounge.startColumnIndex;c<=lounge.endColumnIndex;c++){
+                this.BOARD[r][c] = lounge;
             }
         }
 
         // SET UP LIBRARY ROOM
         let library = new Room('LIBRARY',6,10,0,6,10,6);
-        for(let r=6;r<=10;r++){
-            for(let c=0;c<=6;c++){
+        for(let r=library.startRowIndex;r<=library.endRowIndex;r++){
+            for(let c=library.startColumnIndex;c<=library.endColumnIndex;c++){
                 this.BOARD[r][c] = library;
             }
         }
 
         // SET UP BILLIARD ROOM
         let billiard = new Room('BILLIARD',12,16,0,5,16,5);
-        for(let r=12;r<=16;r++){
-            for(let c=0;c<=5;c++){
+        for(let r=billiard.startRowIndex;r<=billiard.endRowIndex;r++){
+            for(let c=billiard.startColumnIndex;c<=billiard.endColumnIndex;c++){
                 this.BOARD[r][c] = billiard;
             }
         }
 
         // SET UP CONSDRVATORY ROOM
-        let consdrvatory = new Room('CONSDRVATORY',19,23,0,5,23,5);
-        for(let r=19;r<=23;r++){
-            for(let c=0;c<=5;c++){
-                this.BOARD[r][c] = consdrvatory;
+        let conservatory = new Room('CONSERVATORY',19,23,0,5,23,5);
+        for(let r=conservatory.startRowIndex;r<=conservatory.endRowIndex;r++){
+            for(let c=conservatory.startColumnIndex;c<=conservatory.endColumnIndex;c++){
+                this.BOARD[r][c] = conservatory;
             }
         }
 
 
         // SET UP DINNING ROOM
         let dinning = new Room('DINNING',8,15,17,23,15,23);
-        for(let r=8;r<=15;r++){
-            for(let c=17;c<=23;c++){
+        for(let r=dinning.startRowIndex;r<=dinning.endRowIndex;r++){
+            for(let c=dinning.startColumnIndex;c<=dinning.endColumnIndex;c++){
                 this.BOARD[r][c] = dinning;
             }
         }
 
         // SET UP KITCHEN ROOM
         let kitchen = new Room('KITCHEN',18,23,18,23,18,23);
-        for(let r=18;r<=23;r++){
-            for(let c=18;c<=23;c++){
-                this.BOARD[r][c] = dinning;
+        for(let r=kitchen.startRowIndex;r<=kitchen.endRowIndex;r++){
+            for(let c=kitchen.startColumnIndex;c<=kitchen.endColumnIndex;c++){
+                this.BOARD[r][c] = kitchen;
             }
         }
 
         // SET UP BALLROOM
         let ballroom = new Room('BALLROOM',16,23,8,15,16,15);
-        for(let r=16;r<=23;r++){
-            for(let c=8;c<=15;c++){
+        for(let r=ballroom.startRowIndex;r<=ballroom.endRowIndex;r++){
+            for(let c=ballroom.startColumnIndex;c<=ballroom.endColumnIndex;c++){
                 this.BOARD[r][c] = ballroom;
             }
         }

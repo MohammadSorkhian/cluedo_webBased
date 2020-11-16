@@ -99,7 +99,7 @@ class Board {
         // SET CARDS
         let roomCards = [];
         let characterCards = [];
-        let WeaponCards = [];
+        let weaponCards = [];
 
         // setting rooms
         let studyCard = new Card('STUDY',Card.ROOM);
@@ -137,9 +137,54 @@ class Board {
         let missScarletCard = new Card('Miss Scarlet',Card.ROOM);
         characterCards.push(missScarletCard);
 
-        let missScarletCard = new Card('Miss Scarlet',Card.ROOM);
-        characterCards.push(missScarletCard);
+        let professorPlumCard = new Card('Professor Plum',Card.ROOM);
+        characterCards.push(professorPlumCard);
 
+        let mrGreenCard = new Card('Mr Green',Card.ROOM);
+        characterCards.push(mrGreenCard);
+
+        let mrsWhiteCard = new Card('Mrs. White',Card.ROOM);
+        characterCards.push(mrsWhiteCard);
+
+        let mrsPeacockCard = new Card('Mrs. Peacock',Card.ROOM);
+        characterCards.push(mrsPeacockCard);
+
+        // setting weapons
+
+        let candleStickCard = new Card('Candle Stick',Card.ROOM);
+        weaponCards.push(candleStickCard);
+
+        let ropeCard = new Card('Rope',Card.ROOM);
+        weaponCards.push(ropeCard);
+
+        let knifeCard = new Card('Knife',Card.ROOM);
+        weaponCards.push(knifeCard);
+
+        let leadPipeCard = new Card('Lead Pipe',Card.ROOM);
+        weaponCards.push(leadPipeCard);
+
+        let wrenchCard = new Card('Wrench',Card.ROOM);
+        weaponCards.push(wrenchCard);
+
+        let revolverCard = new Card('Revolver',Card.ROOM);
+        weaponCards.push(revolverCard);
+
+
+        // SETTING ENVELOP ON BOARD
+        let envalop = new Envalop(weaponCards[this.getRandomInt(6)],roomCards[this.getRandomInt(9)],characterCards[this.getRandomInt(6)],
+                                 8,14,9,13);
+
+        for(let r=envalop.startRowIndex;r<=envalop.endRowIndex;r++){
+            for(let c=envalop.startColumnIndex;c<=envalop.endColumnIndex;c++){
+                this.BOARD[r][c] = envalop;
+            }
+        }
 
     }
+
+    getRandomInt(max) {
+        return Math.floor(Math.random() * Math.floor(max));
+    }
+
+
 }

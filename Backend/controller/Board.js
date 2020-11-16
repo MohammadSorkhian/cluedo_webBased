@@ -1,3 +1,5 @@
+let Room = require('./Room.js');
+
 class Board {
 
     COLUMNS = 23;
@@ -10,7 +12,7 @@ class Board {
         this.BOARD = [this.ROWS][this.COLUMNS];
     }
 
-    generateNewBoard(){
+    generateNewBoard(numberOfPlayers,players){
 
         // MAKE EACH CELL A TILE
         for(let r=0;r<this.ROWS;r++){
@@ -170,8 +172,12 @@ class Board {
         weaponCards.push(revolverCard);
 
 
+        let envelopIndexWeapon = this.getRandomInt(6);
+        let envelopIndexRoom = this.getRandomInt(9);
+        let envelopIndexChar = this.getRandomInt(6);
+
         // SETTING ENVELOP ON BOARD
-        let envalop = new Envalop(weaponCards[this.getRandomInt(6)],roomCards[this.getRandomInt(9)],characterCards[this.getRandomInt(6)],
+        let envalop = new Envalop(weaponCards[envelopIndexWeapon],roomCards[envelopIndexRoom],characterCards[envelopIndexChar],
                                  8,14,9,13);
 
         for(let r=envalop.startRowIndex;r<=envalop.endRowIndex;r++){
@@ -180,6 +186,74 @@ class Board {
             }
         }
 
+        // delete envelop cards from arrays
+          weaponCards.splice(envelopIndexWeapon, 1);
+          characterCards.splice(envelopIndexChar,1);
+          roomCards.splice(envelopIndexRoom,1);
+
+        // shuffling cards
+        weaponCards = this.shuffle(weaponCards);
+        characterCards = this.shuffle(characterCards);
+        roomCards = this.shuffle(roomCards);
+
+        for(let x=0;x<weaponCards;x++){
+
+            while (true) {
+
+                let playerIndex = this.getRandomInt(numberOfPlayers);
+
+                if (players[playerIndex].cards < Math.floor(18/numberOfPlayers)) {
+                    players[playerIndex].cards.push(weaponCards[x]);
+                    break;
+                }
+            }
+        }
+
+        for(let x=0;x<characterCards;x++){
+
+            while (true) {
+
+                let playerIndex = this.getRandomInt(numberOfPlayers);
+
+                if (players[playerIndex].cards < Math.floor(18/numberOfPlayers)) {
+                    players[playerIndex].cards.push(characterCards[x]);
+                    break;
+                }
+            }
+        }
+
+        for(let x=0;x<roomCards;x++){
+
+            while (true) {
+
+                let playerIndex = this.getRandomInt(numberOfPlayers);
+
+                if (players[playerIndex].cards < Math.floor(18/numberOfPlayers)) {
+                    players[playerIndex].cards.push(roomCards[x]);
+                    break;
+                }
+            }
+        }
+
+    }
+
+    shuffle(array) {
+        var currentIndex = array.length, temporaryValue, randomIndex;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+
+        return array;
     }
 
     getRandomInt(max) {
@@ -188,3 +262,5 @@ class Board {
 
 
 }
+
+module.exports = Board;

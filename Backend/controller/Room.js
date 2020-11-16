@@ -18,3 +18,5 @@ class Room{
         this.doorColIndex = doorColumnIndex;
     }
 }
+
+module.exports = Room;

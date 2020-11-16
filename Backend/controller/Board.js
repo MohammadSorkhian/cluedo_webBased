@@ -23,26 +23,26 @@ class Board {
         }
 
         // SET UP STUDY ROOM
-       let study = new Room('STUDY',0,3,0,6,3,6);
-        for(let r=0;r<=3;r++){
-            for(let c=0;c<=6;c++){
+        let study = new Room('STUDY',0,3,0,6,3,6);
+        for(let r=study.startRowIndex;r<=study.endRowIndex;r++){
+            for(let c=study.startColumnIndex;c<=study.endColumnIndex;c++){
                 this.BOARD[r][c] = study;
             }
         }
 
         // SET UP HALL ROOM
-       let hall = new Room('HALL',0,6,9,14,6,9);
-        for(let r=0;r<=6;r++){
-            for(let c=9;c<=14;c++){
-                this.BOARD[r][c] = hall;
+        let hall = new Room('HALL',0,6,9,14,6,9);
+        for(let r=study.startRowIndex;r<=study.endRowIndex;r++){
+            for(let c=study.startColumnIndex;c<=study.endColumnIndex;c++){
+                this.BOARD[r][c] = study;
             }
         }
 
         // SET UP LOUNGE ROOM
         let lounge = new Room('LOUNGE',0,4,17,23,4,23);
-        for(let r=0;r<=4;r++){
-            for(let c=17;c<=23;c++){
-                this.BOARD[r][c] = lounge;
+        for(let r=study.startRowIndex;r<=study.endRowIndex;r++){
+            for(let c=study.startColumnIndex;c<=study.endColumnIndex;c++){
+                this.BOARD[r][c] = study;
             }
         }
 
@@ -55,7 +55,7 @@ class Board {
         }
 
         // SET UP BILLIARD ROOM
-       let billiard = new Room('BILLIARD',12,16,0,5,16,5);
+        let billiard = new Room('BILLIARD',12,16,0,5,16,5);
         for(let r=12;r<=16;r++){
             for(let c=0;c<=5;c++){
                 this.BOARD[r][c] = billiard;
@@ -63,7 +63,7 @@ class Board {
         }
 
         // SET UP CONSDRVATORY ROOM
-       let consdrvatory = new Room('CONSDRVATORY',19,23,0,5,23,5);
+        let consdrvatory = new Room('CONSDRVATORY',19,23,0,5,23,5);
         for(let r=19;r<=23;r++){
             for(let c=0;c<=5;c++){
                 this.BOARD[r][c] = consdrvatory;
@@ -102,10 +102,12 @@ class Board {
         let WeaponCards = [];
 
         // setting rooms
-        for(let x=0;x<9;x++) {
-          let card = new Card();
+        let studyCard = new Card('STUDY',Card.ROOM);
+        roomCards.push(studyCard);
 
-        }
+        let hallCard = new Card('HALL',Card.ROOM);
+        roomCards.push(hallCard);
+
 
     }
 }

@@ -1,28 +1,35 @@
 let Room = require('./Room.js');
+let Tile = require('./Tile.js');
+let Card = require('./Card.js');
+let Envalop = require('./Envalop.js');
 
 class Board {
 
-    COLUMNS = 23;
-    ROWS = 23;
+    COLUMNS = 24;
+    ROWS = 24;
     BOARD = null;
 
     constructor(rows, columns) {
         this.ROWS = rows;
         this.COLUMNS = columns;
-        this.BOARD = [this.ROWS][this.COLUMNS];
+
+        this.BOARD = new Array(this.COLUMNS);
+
+        // Making a 2D array
+        for (let i = 0; i < this.COLUMNS; i++) {
+            this.BOARD[i] = new Array(this.ROWS);
+        }
+        // Creating cell objects
+        for (let i = 0; i < this.COLUMNS; i++) {
+            for (var j = 0; j < this.ROWS; j++) {
+                this.BOARD[i][j] = new Tile();
+            }
+        }
+
+
     }
 
     generateNewBoard(numberOfPlayers,players){
-
-        // MAKE EACH CELL A TILE
-        for(let r=0;r<this.ROWS;r++){
-
-            for(let c=0;c<this.COLUMNS;c++){
-
-                tile = new Tile();
-                this.BOARD[r][c] = tile;
-            }
-        }
 
         // SET UP STUDY ROOM
         let study = new Room('STUDY',0,3,0,6,3,6);
@@ -178,7 +185,7 @@ class Board {
 
         // SETTING ENVELOP ON BOARD
         let envalop = new Envalop(weaponCards[envelopIndexWeapon],roomCards[envelopIndexRoom],characterCards[envelopIndexChar],
-                                 8,14,9,13);
+            8,14,9,13);
 
         for(let r=envalop.startRowIndex;r<=envalop.endRowIndex;r++){
             for(let c=envalop.startColumnIndex;c<=envalop.endColumnIndex;c++){
@@ -187,52 +194,38 @@ class Board {
         }
 
         // delete envelop cards from arrays
-          weaponCards.splice(envelopIndexWeapon, 1);
-          characterCards.splice(envelopIndexChar,1);
-          roomCards.splice(envelopIndexRoom,1);
+        weaponCards.splice(envelopIndexWeapon, 1);
+        characterCards.splice(envelopIndexChar,1);
+        roomCards.splice(envelopIndexRoom,1);
 
         // shuffling cards
         weaponCards = this.shuffle(weaponCards);
         characterCards = this.shuffle(characterCards);
         roomCards = this.shuffle(roomCards);
 
-        for(let x=0;x<weaponCards;x++){
 
-            while (true) {
+        for(let x=0;x<weaponCards.length;x++){
 
-                let playerIndex = this.getRandomInt(numberOfPlayers);
+            let playerIndex = this.getRandomInt(numberOfPlayers);
+            players[playerIndex]['cards'].push(weaponCards[x]);
 
-                if (players[playerIndex].cards < Math.floor(18/numberOfPlayers)) {
-                    players[playerIndex].cards.push(weaponCards[x]);
-                    break;
-                }
-            }
+
         }
 
-        for(let x=0;x<characterCards;x++){
+        for(let x=0;x<characterCards.length;x++){
 
-            while (true) {
+            let playerIndex = this.getRandomInt(numberOfPlayers);
 
-                let playerIndex = this.getRandomInt(numberOfPlayers);
+            players[playerIndex]['cards'].push(characterCards[x]);
 
-                if (players[playerIndex].cards < Math.floor(18/numberOfPlayers)) {
-                    players[playerIndex].cards.push(characterCards[x]);
-                    break;
-                }
-            }
         }
 
-        for(let x=0;x<roomCards;x++){
+        for(let x=0;x<roomCards.length;x++){
 
-            while (true) {
+            let playerIndex = this.getRandomInt(numberOfPlayers);
 
-                let playerIndex = this.getRandomInt(numberOfPlayers);
+            players[playerIndex]['cards'].push(roomCards[x]);
 
-                if (players[playerIndex].cards < Math.floor(18/numberOfPlayers)) {
-                    players[playerIndex].cards.push(roomCards[x]);
-                    break;
-                }
-            }
         }
 
     }

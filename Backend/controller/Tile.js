@@ -1,6 +1,9 @@
 class Tile {
 
-    name = tile;
+    name = null;
     player = null;
 
 }
+
+module.exports = Tile;
+

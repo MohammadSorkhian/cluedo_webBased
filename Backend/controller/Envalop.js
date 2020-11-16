@@ -20,3 +20,5 @@ class Envalop{
     }
 
 }
+
+module.exports = Envalop;

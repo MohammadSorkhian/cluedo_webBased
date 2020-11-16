@@ -11,16 +11,6 @@ class Card{
         this.name = name;
         this.kind = kind;
     }
-
-    static get ROOM() {
-        return this.ROOM;
-    }
-
-    static get CHARACTER() {
-        return this.CHARACTER;
-    }
-
-    static get WEAPON() {
-        return this.WEAPON;
-    }
 }
+
+module.exports = Card;

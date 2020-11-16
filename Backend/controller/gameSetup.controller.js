@@ -3,7 +3,7 @@ let Player = require('./Player.js');
 
 exports.setupGame = (req, res) => {
 
-    let board = new Board();
+    let board = new Board(24,24);
 
     if (board) {
 
@@ -18,6 +18,7 @@ exports.setupGame = (req, res) => {
 
         res.status(200).send({
             board: board.BOARD,
+            players: players,
             message: "Board generated successfully"
         });
     }

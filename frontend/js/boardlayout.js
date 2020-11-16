@@ -1,29 +1,34 @@
+
+
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
+var canvas = ctx.canvas;
 
 ctx.canvas.width  = 960;
 ctx.canvas.height = 960;
 
+document.onmouseup=getXYPosition;
+
+ctx.shadowBlur = 20;
+ctx.shadowColor = "black";
 
 // Create gradient
 var grd = ctx.createLinearGradient(0,0,2000,2000);
 grd.addColorStop(0,"white");
-grd.addColorStop(1,"white");
+grd.addColorStop(1,"crimson");
 // Fill with gradient
 ctx.fillStyle = grd;
 ctx.fillRect(0,0,1100,1100);
 
-for(let i=0;i<960;i+=40){
-    for(let j=0;j<960;j+=40){
-        let tile = new Image();
-        tile.src = 'images/Tile.png';
-        tile.onload = function() {
+var tile = new Image();
+tile.src = 'images/Tile.png';
+tile.onload = function() {
+    for(let i=0;i<960;i+=40){
+        for(let j=0;j<960;j+=40){
             ctx.drawImage(tile,i,j);
         }
     }
 }
-
-
 
 var kitchen = new Image();
 kitchen.src = 'images/Kitchen.png';
@@ -55,8 +60,6 @@ hall.src = 'images/Hall.png';
 hall.onload = function() {
     ctx.drawImage(hall,360,0);
 }
-
-
 var study = new Image();
 study.src = 'images/Study.png';
 study.onload = function() {
@@ -76,4 +79,71 @@ var cellar = new Image();
 cellar.src = 'images/Cellar.png';
 cellar.onload = function() {
     ctx.drawImage(cellar,360,320);
+}
+
+draw();
+
+function draw(){
+
+    ctx.beginPath();
+    ctx.arc(940, 260, 15, 0, 2 * Math.PI);
+    ctx.stroke();
+    ctx.fillStyle = "yellow";
+    ctx.fill();
+    ctx.closePath();
+    setInterval(redraw, 1000);
+
+}
+
+function redraw() {
+
+    //ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const context = canvas.getContext('2d');
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    
+    for(let i=0;i<960;i+=40){
+        for(let j=0;j<960;j+=40){
+            ctx.drawImage(tile,i,j);
+        }
+    }
+
+    ctx.drawImage(kitchen,720,720);
+    ctx.drawImage(ballroom,320,640);
+    ctx.drawImage(conservatory,0,760);
+    ctx.drawImage(diningRoom,680,320);
+    ctx.drawImage(lounge,685,0);
+    ctx.drawImage(hall,360,0);
+    ctx.drawImage(study,0,0);
+    ctx.drawImage(billiard,0,480);
+    ctx.drawImage(library,0,240);
+    ctx.drawImage(cellar,360,320);
+
+    ctx.beginPath();
+    ctx.arc(900, 260, 15, 0, 2 * Math.PI);
+    ctx.stroke();
+    ctx.fillStyle = "yellow";
+    ctx.fill();
+    ctx.closePath();
+
+}
+
+
+// Cursor coordinate functions
+var myX, myY, xyOn, myMouseX, myMouseY;
+xyOn = true;
+function getXYPosition(e){
+myMouseX=(e||event).clientX;
+myMouseY=(e||event).clientY;
+if (document.documentElement.scrollTop > 0) {
+myMouseY = myMouseY + document.documentElement.scrollTop;
+}
+if (xyOn) {
+alert("X is " + myMouseX + "\nY is " + myMouseY);
+}
+}
+function toggleXY() {
+xyOn = !xyOn;
+document.getElementById('xyLink').blur();
+return false;
 }

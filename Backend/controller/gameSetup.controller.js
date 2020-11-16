@@ -1,5 +1,6 @@
 let Board = require('./Board.js');
 let Player = require('./Player.js');
+var NumberOfPlayers = 4
 
 exports.setupGame = (req, res) => {
 
@@ -10,11 +11,11 @@ exports.setupGame = (req, res) => {
         let players = [];
 
         // generate players
-        for(let x=0;x<6;x++){
+        for(let x=0 ; x<NumberOfPlayers ; x++){
             players.push(new Player(x));
         }
 
-        board.generateNewBoard(6,players);
+        board.generateNewBoard(NumberOfPlayers,players);
 
         res.status(200).send({
             board: board.BOARD,

@@ -3,8 +3,7 @@ let Tile = require('./Tile.js');
 let Card = require('./Card.js');
 let Envalop = require('./Envalop.js');
 
-class Board {
-
+ class Board {
     COLUMNS = 24;
     ROWS = 24;
     BOARD = null;
@@ -12,7 +11,6 @@ class Board {
     constructor(rows, columns) {
         this.ROWS = rows;
         this.COLUMNS = columns;
-
         this.BOARD = new Array(this.COLUMNS);
 
         // Making a 2D array
@@ -25,8 +23,6 @@ class Board {
                 this.BOARD[i][j] = new Tile();
             }
         }
-
-
     }
 
     generateNewBoard(numberOfPlayers,players){
@@ -111,78 +107,79 @@ class Board {
         let weaponCards = [];
 
         // setting rooms
-        let studyCard = new Card('STUDY',Card.ROOM);
+
+        let studyCard = new Card.Card('STUDY',Card.ROOM);
         roomCards.push(studyCard);
 
-        let hallCard = new Card('HALL',Card.ROOM);
+        let hallCard = new Card.Card('HALL',Card.ROOM);
         roomCards.push(hallCard);
 
-        let loungCard = new Card('LOUNGE',Card.ROOM);
+        let loungCard = new Card.Card('LOUNGE',Card.ROOM);
         roomCards.push(loungCard);
 
-        let libraryCard = new Card('LIBRARY',Card.ROOM);
+        let libraryCard = new Card.Card('LIBRARY',Card.ROOM);
         roomCards.push(libraryCard);
 
-        let billiardCard = new Card('BILLIARD',Card.ROOM);
+        let billiardCard = new Card.Card('BILLIARD',Card.ROOM);
         roomCards.push(billiardCard);
 
-        let consdrvatoryCard = new Card('CONSDRVATORY',Card.ROOM);
+        let consdrvatoryCard = new Card.Card('CONSDRVATORY',Card.ROOM);
         roomCards.push(consdrvatoryCard);
 
-        let dinningCard = new Card('DINNING',Card.ROOM);
+        let dinningCard = new Card.Card('DINNING',Card.ROOM);
         roomCards.push(dinningCard);
 
-        let kitchenCard = new Card('KITCHEN',Card.ROOM);
+        let kitchenCard = new Card.Card('KITCHEN',Card.ROOM);
         roomCards.push(kitchenCard);
 
-        let ballRoomCard = new Card('BALLROOM',Card.ROOM);
+        let ballRoomCard = new Card.Card('BALLROOM',Card.ROOM);
         roomCards.push(ballRoomCard);
 
         // setting characters
 
-        let colonelMustardCard = new Card('Colonel Mustard',Card.ROOM);
+        let colonelMustardCard = new Card.Card('Colonel Mustard',Card.CHARACTER);
         characterCards.push(colonelMustardCard);
 
-        let missScarletCard = new Card('Miss Scarlet',Card.ROOM);
+        let missScarletCard = new Card.Card('Miss Scarlet',Card.CHARACTER);
         characterCards.push(missScarletCard);
 
-        let professorPlumCard = new Card('Professor Plum',Card.ROOM);
+        let professorPlumCard = new Card.Card('Professor Plum',Card.CHARACTER);
         characterCards.push(professorPlumCard);
 
-        let mrGreenCard = new Card('Mr Green',Card.ROOM);
+        let mrGreenCard = new Card.Card('Mr Green',Card.CHARACTER);
         characterCards.push(mrGreenCard);
 
-        let mrsWhiteCard = new Card('Mrs. White',Card.ROOM);
+        let mrsWhiteCard = new Card.Card('Mrs. White',Card.CHARACTER);
         characterCards.push(mrsWhiteCard);
 
-        let mrsPeacockCard = new Card('Mrs. Peacock',Card.ROOM);
+        let mrsPeacockCard = new Card.Card('Mrs. Peacock',Card.CHARACTER);
         characterCards.push(mrsPeacockCard);
 
         // setting weapons
 
-        let candleStickCard = new Card('Candle Stick',Card.ROOM);
+        let candleStickCard = new Card.Card('Candle Stick',Card.WEAPON);
         weaponCards.push(candleStickCard);
 
-        let ropeCard = new Card('Rope',Card.ROOM);
+        let ropeCard = new Card.Card('Rope',Card.WEAPON);
         weaponCards.push(ropeCard);
 
-        let knifeCard = new Card('Knife',Card.ROOM);
+        let knifeCard = new Card.Card('Knife',Card.WEAPON);
         weaponCards.push(knifeCard);
 
-        let leadPipeCard = new Card('Lead Pipe',Card.ROOM);
+        let leadPipeCard = new Card.Card('Lead Pipe',Card.WEAPON);
         weaponCards.push(leadPipeCard);
 
-        let wrenchCard = new Card('Wrench',Card.ROOM);
+        let wrenchCard = new Card.Card('Wrench',Card.WEAPON);
         weaponCards.push(wrenchCard);
 
-        let revolverCard = new Card('Revolver',Card.ROOM);
+        let revolverCard = new Card.Card('Revolver',Card.WEAPON);
         weaponCards.push(revolverCard);
 
 
         let envelopIndexWeapon = this.getRandomInt(6);
         let envelopIndexRoom = this.getRandomInt(9);
         let envelopIndexChar = this.getRandomInt(6);
-
+        
         // SETTING ENVELOP ON BOARD
         let envalop = new Envalop(weaponCards[envelopIndexWeapon],roomCards[envelopIndexRoom],characterCards[envelopIndexChar],
             8,14,9,13);
@@ -198,35 +195,40 @@ class Board {
         characterCards.splice(envelopIndexChar,1);
         roomCards.splice(envelopIndexRoom,1);
 
-        // shuffling cards
-        weaponCards = this.shuffle(weaponCards);
-        characterCards = this.shuffle(characterCards);
-        roomCards = this.shuffle(roomCards);
 
+        // shuffling cards and assign cards to players
 
-        for(let x=0;x<weaponCards.length;x++){
-
-            let playerIndex = this.getRandomInt(numberOfPlayers);
-            players[playerIndex]['cards'].push(weaponCards[x]);
-
-
+        let AllCards = weaponCards.concat(characterCards).concat(roomCards)
+        AllCards = this.shuffle(AllCards)
+        console.log(AllCards)
+        var i=0
+        while(AllCards.length!=0){
+            if (i % players.length == 0){ 
+                i = 0 
+            }
+            players[i]['cards'].push(AllCards[0])
+            AllCards.splice(0,1)
+            i++     
         }
+        
+        // weaponCards = this.shuffle(weaponCards);
+        // characterCards = this.shuffle(characterCards);
+        // roomCards = this.shuffle(roomCards);
+        
+        // for(let x=0;x<weaponCards.length;x++){
+            //     let playerIndex = this.getRandomInt(numberOfPlayers);
+        //     players[playerIndex]['cards'].push(weaponCards[x]);
+        // }
 
-        for(let x=0;x<characterCards.length;x++){
+        // for(let x=0;x<characterCards.length;x++){
+        //     let playerIndex = this.getRandomInt(numberOfPlayers);
+        //     players[playerIndex]['cards'].push(characterCards[x]);
+        // }
 
-            let playerIndex = this.getRandomInt(numberOfPlayers);
-
-            players[playerIndex]['cards'].push(characterCards[x]);
-
-        }
-
-        for(let x=0;x<roomCards.length;x++){
-
-            let playerIndex = this.getRandomInt(numberOfPlayers);
-
-            players[playerIndex]['cards'].push(roomCards[x]);
-
-        }
+        // for(let x=0;x<roomCards.length;x++){
+        //     let playerIndex = this.getRandomInt(numberOfPlayers);
+        //     players[playerIndex]['cards'].push(roomCards[x]);
+        // }
 
     }
 

@@ -1,9 +1,8 @@
 const WEAPON='weapon';
-const Character='character';
-const Room='room';
+const CHARACTER='character';
+const ROOM='room';
 
 class Card{
-
     kind = null;
     name = null;
 
@@ -13,4 +12,8 @@ class Card{
     }
 }
 
-module.exports = Card;
+module.exports = {
+    Card: Card,
+    WEAPON: WEAPON,
+    CHARACTER: CHARACTER,
+    ROOM: ROOM}

@@ -3,14 +3,17 @@ const ROWS = 20;
 var board = undefined;
 
 exports.setupGame = (req, res) => {
+
     let board = generateBoard();
 
     if (board) {
+
         res.status(200).send({
             board: board,
             message: "Board generated successfully"
         });
-    } else {
+    }
+    else {
         res.status(500).send({
             message: "Board not generated"
         });

@@ -108,6 +108,38 @@ class Board {
         let hallCard = new Card('HALL',Card.ROOM);
         roomCards.push(hallCard);
 
+        let loungCard = new Card('LOUNGE',Card.ROOM);
+        roomCards.push(loungCard);
+
+        let libraryCard = new Card('LIBRARY',Card.ROOM);
+        roomCards.push(libraryCard);
+
+        let billiardCard = new Card('BILLIARD',Card.ROOM);
+        roomCards.push(billiardCard);
+
+        let consdrvatoryCard = new Card('CONSDRVATORY',Card.ROOM);
+        roomCards.push(consdrvatoryCard);
+
+        let dinningCard = new Card('DINNING',Card.ROOM);
+        roomCards.push(dinningCard);
+
+        let kitchenCard = new Card('KITCHEN',Card.ROOM);
+        roomCards.push(kitchenCard);
+
+        let ballRoomCard = new Card('BALLROOM',Card.ROOM);
+        roomCards.push(ballRoomCard);
+
+        // setting characters
+
+        let colonelMustardCard = new Card('Colonel Mustard',Card.ROOM);
+        characterCards.push(colonelMustardCard);
+
+        let missScarletCard = new Card('Miss Scarlet',Card.ROOM);
+        characterCards.push(missScarletCard);
+
+        let missScarletCard = new Card('Miss Scarlet',Card.ROOM);
+        characterCards.push(missScarletCard);
+
 
     }
 }

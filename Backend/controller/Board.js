@@ -255,7 +255,6 @@ let Envalop = require('./Envalop.js');
         return Math.floor(Math.random() * Math.floor(max));
     }
 
-
 }
 
 module.exports = Board;

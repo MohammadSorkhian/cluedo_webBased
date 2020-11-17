@@ -18,6 +18,19 @@ exports.loginUser = (req, res) => {
                     message: "Your Password mismatch. Please enter a correct password"
                 });
             } else {
+
+                User.find({ user_id: user.id }, function(err, friends) {
+
+                    if(err) {
+                        res.status(500).send({
+                            message: "Unable to fetch friends"
+                        });
+                    }
+
+                     user['friends'] = friends;
+
+                });
+
                 res.status(200).send({
                     data: {"profile": user, "test": true},
                     message: "you are successfully logged In"
@@ -28,9 +41,28 @@ exports.loginUser = (req, res) => {
 
 };
 
-// Create User
+// Create Dummy User
 exports.createLogin = (req, res) => {
     var testUser = new User({
+        id:1,
+        username: 'miaftab',
+        password: 'example@1234'
+    });
+
+    var testUser = new User({
+        id:2,
+        username: 'miaftab',
+        password: 'example@1234'
+    });
+
+    var testUser = new User({
+        id:3,
+        username: 'miaftab',
+        password: 'example@1234'
+    });
+
+    var testUser = new User({
+        id:4,
         username: 'miaftab',
         password: 'example@1234'
     });

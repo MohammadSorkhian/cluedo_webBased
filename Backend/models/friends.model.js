@@ -4,9 +4,8 @@ var mongoose = require('mongoose'),
     SALT_WORK_FACTOR = 10;
 
 var UserSchema = new Schema({
-    id: { type: Number, required: true, index: { unique: true } },
-    username: { type: String, required: true, index: { unique: true } },
-    password: { type: String, required: true }
+    user_id: { type: String, required: true, index: { unique: true } },
+    friend_id: { type: String, required: true }
 });
 
 UserSchema.pre('save', function(next) {

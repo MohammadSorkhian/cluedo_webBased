@@ -7,6 +7,7 @@ class Room{
     endColumnIndex;
     doorRowIndex;
     doorColIndex;
+    player = null;
 
     constructor(name,startRowIndex,endRowIndex,startColumnIndex,endColumnIndex,doorRowIndex,doorColumnIndex) {
         this.name = name;

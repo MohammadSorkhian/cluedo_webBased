@@ -2,9 +2,9 @@ let Room = require('./Room.js');
 let Tile = require('./Tile.js');
 let Card = require('./Card.js');
 let Envalop = require('./Envalop.js');
-const CharacterModel = require('./CharacterModel.js');
+let Character = require('./Character.js');
 
- class Board {
+class Board {
     COLUMNS = 24;
     ROWS = 24;
     BOARD = null;
@@ -104,7 +104,7 @@ const CharacterModel = require('./CharacterModel.js');
 
         // SET CARDS
         let roomCards = [];
-        var characterCards = [];
+        let characterCards = [];
         let weaponCards = [];
 
         // setting rooms
@@ -138,74 +138,23 @@ const CharacterModel = require('./CharacterModel.js');
 
         // setting characters
 
+        let colonelMustardCard = new Card.Card('Colonel Mustard',Card.CHARACTER);
+        characterCards.push(colonelMustardCard);
 
-        let colonelMustardCard = new CharacterModel.Character(
-            'Colonel Mustard', 
-            CharacterModel.Type, 
-            CharacterModel.CharacterSpec["Colonel Mustard"]["color"], 
-            CharacterModel.CharacterSpec["Colonel Mustard"]["position"])
-            characterCards.push(colonelMustardCard)
-            
-        let professorPlumCard = new CharacterModel.Character(
-            'Professor Plum', 
-            CharacterModel.Type, 
-            CharacterModel.CharacterSpec['Professor Plum']["color"], 
-            CharacterModel.CharacterSpec['Professor Plum']["position"]) ;
-            characterCards.push(professorPlumCard)
+        let missScarletCard = new Card.Card('Miss Scarlet',Card.CHARACTER);
+        characterCards.push(missScarletCard);
 
+        let professorPlumCard = new Card.Card('Professor Plum',Card.CHARACTER);
+        characterCards.push(professorPlumCard);
 
-        let missScarletCard = new CharacterModel.Character(
-            'Miss Scarlet', 
-            CharacterModel.Type, 
-            CharacterModel.CharacterSpec['Miss Scarlet']["color"], 
-            CharacterModel.CharacterSpec['Miss Scarlet']["position"]) ;
-            characterCards.push(missScarletCard)
+        let mrGreenCard = new Card.Card('Mr Green',Card.CHARACTER);
+        characterCards.push(mrGreenCard);
 
-        let mrGreenCard = new CharacterModel.Character(
-            'Mr Green', 
-            CharacterModel.Type, 
-            CharacterModel.CharacterSpec['Mr Green']["color"], 
-            CharacterModel.CharacterSpec['Mr Green']["position"]) ;
-            characterCards.push(mrGreenCard)
+        let mrsWhiteCard = new Card.Card('Mrs. White',Card.CHARACTER);
+        characterCards.push(mrsWhiteCard);
 
-        let mrsWhiteCard = new CharacterModel.Character(
-            'Mrs. White', 
-            CharacterModel.Type, 
-            CharacterModel.CharacterSpec['Mrs. White']["color"], 
-            CharacterModel.CharacterSpec['Mrs. White']["position"]) ;
-            characterCards.push(mrsWhiteCard)
-
-        let mrsPeacockCard = new CharacterModel.Character(
-            'Mrs. Peacock', 
-            CharacterModel.Type, 
-            CharacterModel.CharacterSpec['Mrs. Peacock']["color"], 
-            CharacterModel.CharacterSpec['Mrs. Peacock']["position"]) ;
-            characterCards.push()
-         
-        // console.log(characterCards)
-        // console.log(colonelMustardCard2.name)
-        // console.log(colonelMustardCard2.kind)
-        // console.log(colonelMustardCard2.color)
-        // console.log(colonelMustardCard2.position)
-        
-
-        // let colonelMustardCard = new Card.Card('Colonel Mustard',Card.CHARACTER);
-        // characterCards.push(colonelMustardCard);
-
-        // let missScarletCard = new Card.Card('Miss Scarlet',Card.CHARACTER);
-        // characterCards.push(missScarletCard);
-
-        // let professorPlumCard = new Card.Card('Professor Plum',Card.CHARACTER);
-        // characterCards.push(professorPlumCard);
-
-        // let mrGreenCard = new Card.Card('Mr Green',Card.CHARACTER);
-        // characterCards.push(mrGreenCard);
-
-        // let mrsWhiteCard = new Card.Card('Mrs. White',Card.CHARACTER);
-        // characterCards.push(mrsWhiteCard);
-
-        // let mrsPeacockCard = new Card.Card('Mrs. Peacock',Card.CHARACTER);
-        // characterCards.push(mrsPeacockCard);
+        let mrsPeacockCard = new Card.Card('Mrs. Peacock',Card.CHARACTER);
+        characterCards.push(mrsPeacockCard);
 
         // setting weapons
 
@@ -228,10 +177,10 @@ const CharacterModel = require('./CharacterModel.js');
         weaponCards.push(revolverCard);
 
 
-        let envelopIndexWeapon = this.getRandomInt(6);
-        let envelopIndexRoom = this.getRandomInt(9);
-        let envelopIndexChar = this.getRandomInt(6);
-        
+        let envelopIndexWeapon = Board.getRandomInt(6);
+        let envelopIndexRoom = Board.getRandomInt(9);
+        let envelopIndexChar = Board.getRandomInt(6);
+
         // SETTING ENVELOP ON BOARD
         let envalop = new Envalop(weaponCards[envelopIndexWeapon],roomCards[envelopIndexRoom],characterCards[envelopIndexChar],
             8,14,9,13);
@@ -252,34 +201,32 @@ const CharacterModel = require('./CharacterModel.js');
 
         let AllCards = weaponCards.concat(characterCards).concat(roomCards)
         AllCards = this.shuffle(AllCards)
+        console.log(AllCards)
         var i=0
         while(AllCards.length!=0){
-            if (i % players.length == 0){ 
-                i = 0 
+            if (i % players.length == 0){
+                i = 0
             }
             players[i]['cards'].push(AllCards[0])
             AllCards.splice(0,1)
-            i++     
+            i++
         }
-        
-        // weaponCards = this.shuffle(weaponCards);
-        // characterCards = this.shuffle(characterCards);
-        // roomCards = this.shuffle(roomCards);
-        
-        // for(let x=0;x<weaponCards.length;x++){
-            //     let playerIndex = this.getRandomInt(numberOfPlayers);
-        //     players[playerIndex]['cards'].push(weaponCards[x]);
-        // }
 
-        // for(let x=0;x<characterCards.length;x++){
-        //     let playerIndex = this.getRandomInt(numberOfPlayers);
-        //     players[playerIndex]['cards'].push(characterCards[x]);
-        // }
+        for(let y=0;y<players.length;y++) {
 
-        // for(let x=0;x<roomCards.length;x++){
-        //     let playerIndex = this.getRandomInt(numberOfPlayers);
-        //     players[playerIndex]['cards'].push(roomCards[x]);
-        // }
+            console.log(players[y].playerCharacterObject.name);
+
+            for(let x=0;x<Character.CharacterSpec.length;x++){
+
+                if(Character.CharacterSpec[x].name === players[y].playerCharacterObject.name) {
+
+                    console.log(Character.CharacterSpec[x].name);
+
+                    this.BOARD[Character.CharacterSpec[x].position[1]][Character.CharacterSpec[x].position[0]].player = players[y];
+                    break;
+                }
+            }
+        }
 
     }
 
@@ -302,10 +249,13 @@ const CharacterModel = require('./CharacterModel.js');
         return array;
     }
 
-    getRandomInt(max) {
+    static getRandomInt(max) {
         return Math.floor(Math.random() * Math.floor(max));
     }
 
+
+
+
 }
-module.exports = Board
-// console.log(Board.characterCards)
+
+module.exports = Board;

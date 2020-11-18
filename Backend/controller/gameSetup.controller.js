@@ -1,31 +1,27 @@
 let Board = require('./Board.js');
 let Player = require('./Player.js');
-var NumberOfPlayers = 6
-var CharacterName = [
-    'Colonel Mustard',
-    'Miss Scarlet',
-    'Professor Plum',
-    'Mr Green', 
-    'Mrs. White',
-    'Mrs. Peacock'
-]
-var CharacterColor = {
-    'Colonel Mustard':"#ffbf00" ,
-    'Miss Scarlet':"#ff0000",
-    'Professor Plum':"#cc0099",
-    'Mr Green':"#00b33c",
-    'Mrs. White':"#f2f2f2",
-    'Mrs. Peacock':"#4d4dff"
-}
+let Character = require('./Character.js');
+let NumberOfPlayers = 6
+
 exports.setupGame = (req, res) => {
 
     let board = new Board(24,24);
     if (board) {
+
         let players = [];
         // generate players
+
+        let temp = Character.CharacterSpec.slice();
+
         for(let x=0 ; x<NumberOfPlayers ; x++){
-            CharacterName = board.shuffle(CharacterName)
-            players.push(new Player(x));
+
+            let index = Board.getRandomInt(6-x);
+
+            let character = new Character.Character(temp[index].name,temp[index].color);
+
+            temp.splice(index, 1);
+
+            players.push(new Player(x,character));
         }
 
         board.generateNewBoard(NumberOfPlayers,players);

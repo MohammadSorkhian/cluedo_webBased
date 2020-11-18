@@ -2,9 +2,12 @@ const auth = require('../controller/authentication.controller');
 const gameSetup = require('../controller/gameSetup.controller');
 
 module.exports = (app) => {
-    app.post('/create-login', auth.createLogin);
-    app.post('/login', auth.loginUser);
 
-    // Game setup API's
+    // Authentications
+    app.post('/login', auth.loginUser);
+    app.get('/create-login', auth.createLogin);
+    app.get('/associate-friends', auth.associateFriendsInAllDB);
+
+    // Game setup
     app.get('/game-setup', gameSetup.setupGame);
 }

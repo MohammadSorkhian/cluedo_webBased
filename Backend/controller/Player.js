@@ -1,10 +1,14 @@
 class Player{
 
     playerID;
+    playerCharacter;
+    playerColor;
     cards = []
 
-    constructor(playerID) {
+    constructor(playerID, playerCharacter, playerColor) {
         this.playerID = playerID;
+        this.playerCharacter = playerCharacter;
+        this.playerColor = playerColor
     }
 
 }

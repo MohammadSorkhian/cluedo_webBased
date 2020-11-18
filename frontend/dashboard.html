@@ -25,7 +25,7 @@
                              alt="">
                     </div>
                     <div class="media-body">
-                        <div>Logout</div>
+                        <button class="btn btn-dark btn-block" onclick="logout()">Logout</button>
                     </div>
                 </a>
             </ul>
@@ -381,10 +381,44 @@
         crossorigin="anonymous"></script>
 <script src="js/bootstrap.min.js"></script>
 <script>
+    $(document).ready(function () {
+        let user_data = localStorage.getItem('user_data');
+        user_data = JSON.parse(user_data);
+
+        console.log(user_data);
+
+
+        let friends = [];
+
+        $.ajax({
+            url: "http://localhost:3000/get-friends",
+            type: "POST",
+            data: {
+                id: user_data.data.profile.id,
+            },
+            success: function (data, textStatus, jqXHR) {
+                console.log(data)
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error: " + errorThrown);
+            }
+        });
+
+
+        if (!user_data) {
+            window.location.replace("index.html");
+        }
+    });
+
     $(".users-table").on('click', 'input:checkbox', function () {
         $(this).closest('tr').toggleClass('selected', this.checked);
     });
     $('.users-table input:checkbox:checked').closest('tr').addClass('selected');
+
+    function logout() {
+        localStorage.removeItem('user_data');
+        window.location.replace("index.html");
+    }
 </script>
 </body>
 </html>

@@ -7,6 +7,7 @@ module.exports = (app) => {
     app.post('/login', auth.loginUser);
     app.get('/create-login', auth.createLogin);
     app.get('/associate-friends', auth.associateFriendsInAllDB);
+    app.post('/get-friends', auth.getFriends)
 
     // Game setup
     app.get('/game-setup', gameSetup.setupGame);

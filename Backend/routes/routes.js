@@ -11,4 +11,9 @@ module.exports = (app) => {
 
     // Game setup
     app.post('/game-setup', gameSetup.setupGame);
+    app.post('/get-ready-game', gameSetup.getReadyGame);
+    app.post('/update-invite-status', gameSetup.updateInviteStatus);
+    app.post('/start-game', gameSetup.startGame);
+
+    app.post('/get-game', gameSetup.getGame);
 }

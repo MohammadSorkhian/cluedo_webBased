@@ -6,6 +6,7 @@ var connection = mongoose.createConnection("mongodb+srv://miaftab:Windows_5300@u
 autoIncrement.initialize(connection);
 
 var GameSchema = new Schema({
+    host_id: {type: Number},
     init_players_count: {type: Number, required: true},
     final_players_count: {type: Number},
     players: {type: JSON, required: true},
@@ -16,6 +17,7 @@ var GameSchema = new Schema({
 GameSchema.pre('save', function (next) {
     next();
 });
+
 
 GameSchema.plugin(autoIncrement.plugin, {model: 'Games', field: 'id'});
 module.exports = mongoose.model('Games', GameSchema);

@@ -10,5 +10,5 @@ module.exports = (app) => {
     app.post('/get-friends', auth.getFriends)
 
     // Game setup
-    app.get('/game-setup', gameSetup.setupGame);
+    app.post('/game-setup', gameSetup.setupGame);
 }

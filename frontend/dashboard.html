@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Software Engineering Project</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -39,7 +38,7 @@
                 <div class="col-lg-6 mb-3 mb-lg-0">
                     <div class="card commonCard shadow-lg">
                         <div class="card-body">
-                            <h4>Friends Details</h4>
+                            <h4>Users Details</h4>
                             <div class="row justify-content-end">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -53,9 +52,7 @@
                             </div>
                             <div class="form-row table-footer">
                                 <div class="col-6">
-                                    <button class="btn btn-danger btn-block" data-toggle="modal" data-target="#modelId">
-                                        Setup Game
-                                    </button>
+                                    <button class="btn btn-danger btn-block" data-toggle="modal" data-target="#modelId">Start Game</button>
                                 </div>
                                 <div class="col-6">
                                     <button class="btn btn-dark btn-block">Start Tournament</button>
@@ -70,216 +67,66 @@
                             <h4>Resume Game</h4>
                             <div class="row justify-content-end">
                                 <div class="col-md-6 text-right">
-                                    <h5 style="margin-bottom: 30px;">Time:<small class="pl-2">09:10 AM</small></h5>
+                                    <h5>Time:<small class="pl-2">09:10 AM</small></h5>
                                 </div>
                             </div>
-                            <div class="table-responsive users-table-wrap">
-                                <table class="table table-dark users-table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>Players</th>
-                                        <th>Status</th>
-                                        <th>Characters</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td scope="row">
-                                            <div class="media align-items-center">
-                                                <div class="imgDiv avatar d-flex ml-1 mr-2">
-                                                    <img class="img"
-                                                         src="https://lh3.googleusercontent.com/prMkp6oKRY4iNucqeZjdplEO4zaeD2KjU6DzruS1PJUzXO_x9xVSZI6Dti6FERItz_8N"
-                                                         alt=""/>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>moso</div>
-                                                </div>
-                                            </div>
-                                            <ul class="list-inline mb-0 mt-2">
-                                                <li class="list-inline-item">
-                                                    <div class="card-div">
-                                                        card text
-                                                    </div>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <div class="card-div">
-                                                        card text
-                                                    </div>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <div class="card-div">
-                                                        card text
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td>
-                                            <i class="fa fa-check fa-2x text-success" aria-hidden="true"></i>
-                                        </td>
-                                        <td>
-                                            <div class="media align-items-center">
-                                                <div class="imgDiv avatar d-flex ml-1 mr-2">
-                                                    <img class="img"
-                                                         src="images/c1.jpg"
-                                                         alt=""/>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>moso</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="row">
-                                            <div class="media align-items-center">
-                                                <div class="imgDiv avatar d-flex ml-1 mr-2">
-                                                    <img class="img"
-                                                         src="https://lh3.googleusercontent.com/prMkp6oKRY4iNucqeZjdplEO4zaeD2KjU6DzruS1PJUzXO_x9xVSZI6Dti6FERItz_8N"
-                                                         alt=""/>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>moso</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <i class="fa fa-clock-o fa-2x text-danger" aria-hidden="true"></i>
-                                        </td>
-                                        <td>
-                                            <div class="media align-items-center">
-                                                <div class="imgDiv avatar d-flex ml-1 mr-2">
-                                                    <img class="img"
-                                                         src="images/c2.jpg"
-                                                         alt=""/>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>moso</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="row">
-                                            <div class="media align-items-center">
-                                                <div class="imgDiv avatar d-flex ml-1 mr-2">
-                                                    <img class="img"
-                                                         src="https://lh3.googleusercontent.com/prMkp6oKRY4iNucqeZjdplEO4zaeD2KjU6DzruS1PJUzXO_x9xVSZI6Dti6FERItz_8N"
-                                                         alt=""/>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>moso</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <i class="fa fa-clock-o fa-2x text-danger" aria-hidden="true"></i>
-                                        </td>
-                                        <td>
-                                            <div class="media align-items-center">
-                                                <div class="imgDiv avatar d-flex ml-1 mr-2">
-                                                    <img class="img"
-                                                         src="images/c3.jpg"
-                                                         alt=""/>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>moso</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="row">
-                                            <div class="media align-items-center">
-                                                <div class="imgDiv avatar d-flex ml-1 mr-2">
-                                                    <img class="img"
-                                                         src="https://lh3.googleusercontent.com/prMkp6oKRY4iNucqeZjdplEO4zaeD2KjU6DzruS1PJUzXO_x9xVSZI6Dti6FERItz_8N"
-                                                         alt=""/>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>moso</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <i class="fa fa-clock-o fa-2x text-danger" aria-hidden="true"></i>
-                                        </td>
-                                        <td>
-                                            <div class="media align-items-center">
-                                                <div class="imgDiv avatar d-flex ml-1 mr-2">
-                                                    <img class="img"
-                                                         src="images/c4.jpg"
-                                                         alt=""/>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>moso</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="row">
-                                            <div class="media align-items-center">
-                                                <div class="imgDiv avatar d-flex ml-1 mr-2">
-                                                    <img class="img"
-                                                         src="https://lh3.googleusercontent.com/prMkp6oKRY4iNucqeZjdplEO4zaeD2KjU6DzruS1PJUzXO_x9xVSZI6Dti6FERItz_8N"
-                                                         alt=""/>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>moso</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <i class="fa fa-clock-o fa-2x text-danger" aria-hidden="true"></i>
-                                        </td>
-                                        <td>
-                                            <div class="media align-items-center">
-                                                <div class="imgDiv avatar d-flex ml-1 mr-2">
-                                                    <img class="img"
-                                                         src="images/c5.jpg"
-                                                         alt=""/>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>moso</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="row">
-                                            <div class="media align-items-center">
-                                                <div class="imgDiv avatar d-flex ml-1 mr-2">
-                                                    <img class="img"
-                                                         src="https://lh3.googleusercontent.com/prMkp6oKRY4iNucqeZjdplEO4zaeD2KjU6DzruS1PJUzXO_x9xVSZI6Dti6FERItz_8N"
-                                                         alt=""/>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>moso</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <i class="fa fa-clock-o fa-2x text-danger" aria-hidden="true"></i>
-                                        </td>
-                                        <td>
-                                            <div class="media align-items-center">
-                                                <div class="imgDiv avatar d-flex ml-1 mr-2">
-                                                    <img class="img"
-                                                         src="images/c6.jpg"
-                                                         alt=""/>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>moso</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                            <div class="form-row">
+                                <div class="col-md-6 col-lg-4 mb-3">
+                                    <h6 class="mb-3">User 1</h6>
+                                    <div class="media align-items-center">
+                                        <div class="imgDiv avatar d-flex mr-2">
+                                            <img class="img"
+                                                 src="https://lh3.googleusercontent.com/prMkp6oKRY4iNucqeZjdplEO4zaeD2KjU6DzruS1PJUzXO_x9xVSZI6Dti6FERItz_8N"
+                                                 alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div>User name</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4 mb-3">
+                                    <h6 class="mb-3">User 2</h6>
+                                    <div class="media align-items-center">
+                                        <div class="imgDiv avatar d-flex mr-2">
+                                            <img class="img"
+                                                 src="https://lh3.googleusercontent.com/prMkp6oKRY4iNucqeZjdplEO4zaeD2KjU6DzruS1PJUzXO_x9xVSZI6Dti6FERItz_8N"
+                                                 alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div>User name</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4 mb-3">
+                                    <h6 class="mb-3">User 3</h6>
+                                    <div class="media align-items-center">
+                                        <div class="imgDiv avatar d-flex mr-2">
+                                            <img class="img"
+                                                 src="https://lh3.googleusercontent.com/prMkp6oKRY4iNucqeZjdplEO4zaeD2KjU6DzruS1PJUzXO_x9xVSZI6Dti6FERItz_8N"
+                                                 alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div>User name</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4 mb-3">
+                                    <h6 class="mb-3">User 4</h6>
+                                    <div class="media align-items-center">
+                                        <div class="imgDiv avatar d-flex mr-2">
+                                            <img class="img"
+                                                 src="https://lh3.googleusercontent.com/prMkp6oKRY4iNucqeZjdplEO4zaeD2KjU6DzruS1PJUzXO_x9xVSZI6Dti6FERItz_8N"
+                                                 alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div>User name</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-row table-footer justify-content-center">
+                            <div class="row justify-content-center mt-4">
                                 <div class="col-md-5">
-                                    <button class="btn btn-danger btn-block" data-target="#alert" data-toggle="modal">Resume</button>
+                                    <button class="btn btn-danger btn-block">Resume</button>
                                 </div>
                             </div>
                         </div>
@@ -313,8 +160,7 @@
     </div>
 
     <!-- Select Players Modal -->
-    <div class="modal fade" id="selectPlayers" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-         aria-hidden="true">
+    <div class="modal fade" id="selectPlayers" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content commonCard">
                 <div class="modal-header">
@@ -335,30 +181,8 @@
             </div>
         </div>
     </div>
-
-    <!-- Select Players Modal -->
-    <div class="modal fade" id="alert" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content commonCard">
-                <div class="modal-header">
-                    <h5 class="modal-title">Alert</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    3 player accepted 1 player still not accepted
-                </div>
-                <div class="modal-footer">
-                    <button  type="button" class="btn btn-dark">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <script src="js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -393,7 +217,7 @@
                     var x;
                     for (x = 0; x < friends.data.length; ++x) {
                         let friend = friends.data[x];
-                        friends_table_html += '<tr><td scope="row"><div class="form-check"><div class="media align-items-center"><div class="imgDiv avatar d-flex ml-1 mr-2"><img class="img" src="https://lh3.googleusercontent.com/prMkp6oKRY4iNucqeZjdplEO4zaeD2KjU6DzruS1PJUzXO_x9xVSZI6Dti6FERItz_8N" alt=""></div><div class="media-body"><div>' + friend.username + '</div></div></div></div></td><td><i class="dot fa fa-circle online"></i>Online</td></tr>'
+                        friends_table_html += '<tr><td scope="row"><div class="form-check"><div class="media align-items-center"><div class="imgDiv avatar d-flex ml-1 mr-2"><img class="img" src="https://lh3.googleusercontent.com/prMkp6oKRY4iNucqeZjdplEO4zaeD2KjU6DzruS1PJUzXO_x9xVSZI6Dti6FERItz_8N" alt=""></div><div class="media-body"><div>' + friend.username + '</div></div></div></div></td><td>Online</td></tr>'
                         select_players_html += '<div class="media align-items-center mb-2"><input type="checkbox" name="player" value="' + friend.id + '"><div class="imgDiv avatar d-flex mx-2"><img class="img" src="https://lh3.googleusercontent.com/prMkp6oKRY4iNucqeZjdplEO4zaeD2KjU6DzruS1PJUzXO_x9xVSZI6Dti6FERItz_8N" alt=""></div><div class="media-body"><div>' + friend.username + '</div></div></div>'
                     }
                     friends_table_html += friends_table_html_postfix;
@@ -470,28 +294,51 @@
     }
 
     function selectPlayers(players) {
-        let FRIENDS = [];
+        let PLAYERS = [];
+
 
         let friends = localStorage.getItem("friends");
         let gameData = localStorage.getItem("game_data");
+        let user_data = localStorage.getItem("user_data");
 
         gameData = JSON.parse(gameData);
         friends = JSON.parse(friends);
+        user_data = JSON.parse(user_data);
 
         if (!gameData.players_count) {
             alert("Something went wrong. Please try again later");
             return;
         }
 
-        var i;
+        // Add myself as a user
+        let me = user_data.data.profile;
+        me.is_host = true;
+        me.invite_status = false;
+        PLAYERS.push(me);
 
+        var i;
         for (i = 0; i < players.length; ++i) {
             let friend = friends.find(x => x.id === parseInt(players[i]));
-            FRIENDS.push(friend);
+            friend.is_host = false;
+            PLAYERS.push(friend);
         }
 
-        $(function () {
-            $('#selectPlayers').modal('hide');
+        $.ajax({
+            url: "http://localhost:3000/game-setup",
+            type: "POST",
+            data: {
+                players: PLAYERS,
+            },
+            success: function (data, textStatus, jqXHR) {
+                console.log(data);
+
+                $(function () {
+                    $('#selectPlayers').modal('hide');
+                });
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error: " + errorThrown);
+            }
         });
     }
 </script>

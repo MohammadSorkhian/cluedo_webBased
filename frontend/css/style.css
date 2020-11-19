@@ -12,6 +12,7 @@
 ::-webkit-scrollbar-thumb {
     background-color: #000000;
 }
+
 .wrapper {
     display: flex;
     flex-direction: column;
@@ -67,15 +68,17 @@
     max-height: 100%;
     margin: auto;
 }
+
 .avatar-lg {
     width: 100px;
     height: 100px;
-    border: 2px solid #ffffff;
 }
+
 .avatar {
     width: 60px;
     height: 60px;
-    border: 2px solid #ffffff;
+    border: 2px solid orange;
+    background: #ffffff;
 }
 
 .avatar-sm {
@@ -87,6 +90,7 @@
 .users-table-wrap {
     max-height: 60vh;
     overflow: auto;
+    min-height: 72vh;
 }
 
 .users-table thead tr th {
@@ -117,13 +121,44 @@
     box-shadow: none;
 }
 
-.authCard .avatar-lg{
+.authCard .avatar-lg {
     position: absolute;
     top: -60px;
     left: 0;
     right: 0;
     background: #ffff;
 }
-.modal .close{
+
+.modal .close {
     color: #ffffff;
+}
+
+.dot {
+    font-size: 12px;
+    color: gray;
+    top: -2px;
+    position: relative;
+    right: 4px;
+}
+
+.dot.online {
+    color: yellow;
+}
+
+.card-div {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid;
+    border-radius: 4px;
+    margin-bottom: 4px;
+}
+
+@media (max-width: 991px) {
+    .users-table-wrap {
+        min-height: auto;
+    }
 }

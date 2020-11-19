@@ -1,56 +1,50 @@
 User = require('../models/user.model');
 Friends = require('../models/friends.model');
 // Login
-exports.loginUser = async (req, res) => {
+exports.loginUser = (req, res) => {
 
     let userName = req.param('user_name');
     let password = req.param('password');
 
-    User.findOne({ username: userName }, function(err, user) {
+    User.findOne({username: userName}, function (err, user) {
         console.log(user);
         console.log(err);
 
-        if(err) {
+        if (err) {
             res.status(500).send({
                 message: err.message
             });
             return;
         }
 
-        if(user === undefined || user === null) {
+        if (user === undefined || user === null) {
             res.status(401).send({
                 message: "Incorrect username"
             });
             return;
         }
 
-        user.comparePassword(password, function(err, isMatch) {
+        user.comparePassword(password, function (err, isMatch) {
             if (err || !isMatch) {
                 res.status(401).send({
                     message: "Your Password mismatch. Please enter a correct password"
                 });
                 return;
-            }
-            else {
-
-
-               User.aggregate([
-                    {
-                        $lookup:
-                            {
-                                from: "friends",
-                                localField: "id",
-                                foreignField: "friend_id",
-                                as: "friends"
-                            }
+            } else {
+                Friends.find({user_id: user.id}, function (err, friends) {
+                    if (err) {
+                        res.status(401).send({
+                            message: "Unable to fetch friends"
+                        });
+                        return;
                     }
-                ]).exec(function (err,data) {
 
-                   res.status(200).send({
-                       data: {"profile": user, 'friends': data, "test": true},
-                       message: "you are successfully logged In"
-                   });
-               });
+                    res.status(200).send({
+                        data: {"profile": user, 'friends': friends, "test": true},
+                        message: "you are successfully logged In"
+                    });
+
+                });
 
 
             }
@@ -60,10 +54,10 @@ exports.loginUser = async (req, res) => {
 };
 
 exports.getFriends = (req, res) => {
-    let id = req.param('id');
+    let ids = req.param('ids');
 
-    Friends.find({ friend_id: id }, function(err, friends) {
-        if(err) {
+    User.find({"id": {"$in": ids}}, function (err, friends) {
+        if (err) {
             res.status(400).send({
                 message: "Bad request no friends"
             });
@@ -74,7 +68,6 @@ exports.getFriends = (req, res) => {
             data: friends,
             message: "Friends has been fetched successfully"
         });
-
     });
 }
 
@@ -82,7 +75,7 @@ exports.getFriends = (req, res) => {
 exports.createLogin = (req, res) => {
 
     var testUser = new User({
-        id:1,
+        id: 1,
         username: 'miaftab',
         password: 'example@1234'
     });
@@ -92,7 +85,7 @@ exports.createLogin = (req, res) => {
     });
 
     testUser = new User({
-        id:2,
+        id: 2,
         username: 'moso',
         password: 'example@1234'
     });
@@ -102,7 +95,7 @@ exports.createLogin = (req, res) => {
     });
 
     testUser = new User({
-        id:3,
+        id: 3,
         username: 'nishant',
         password: 'example@1234'
     });
@@ -112,7 +105,7 @@ exports.createLogin = (req, res) => {
     });
 
     testUser = new User({
-        id:4,
+        id: 4,
         username: 'swati',
         password: 'example@1234'
     });
@@ -122,7 +115,7 @@ exports.createLogin = (req, res) => {
     });
 
     testUser = new User({
-        id:5,
+        id: 5,
         username: 'prasun',
         password: 'example@1234'
     });
@@ -132,7 +125,7 @@ exports.createLogin = (req, res) => {
     });
 
     testUser = new User({
-        id:6,
+        id: 6,
         username: 'adnan',
         password: 'example@1234'
     });
@@ -150,18 +143,18 @@ exports.createLogin = (req, res) => {
 // Associate Friends
 exports.associateFriendsInAllDB = (req, res) => {
 
-    User.find(function(err, users) {
+    User.find(function (err, users) {
         if (err) {
             res.status(500).send({
                 message: "unable to fetch all users from db"
             });
         }
 
-        for(let x=0;x<users.length;x++){
+        for (let x = 0; x < users.length; x++) {
 
-            for(let y=0;y<users.length;y++){
+            for (let y = 0; y < users.length; y++) {
 
-                if(users[x].id !== users[y].id){
+                if (users[x].id !== users[y].id) {
 
                     let friend = new Friends({
                         user_id: users[x].id,

@@ -18,6 +18,7 @@ mongoose.connect(dbConfig.url, {
     process.exit();
 });
 
+
 // Add headers
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');

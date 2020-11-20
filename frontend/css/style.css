@@ -90,7 +90,7 @@
 .users-table-wrap {
     max-height: 60vh;
     overflow: auto;
-    min-height: 72vh;
+    min-height: calc(100vh - 250px);
 }
 
 .users-table thead tr th {
@@ -144,7 +144,9 @@
 .dot.online {
     color: yellow;
 }
-
+.cards-ul li {
+    vertical-align: top;
+}
 .card-div {
     width: 100px;
     height: 100px;
@@ -155,6 +157,9 @@
     border: 1px solid;
     border-radius: 4px;
     margin-bottom: 4px;
+    word-break: break-word;
+    text-align: center;
+    padding: 4px;
 }
 
 @media (max-width: 991px) {

@@ -8,6 +8,7 @@ class Board {
     COLUMNS = 24;
     ROWS = 24;
     BOARD = null;
+    CARDS = [];
 
     constructor(rows, columns) {
         this.ROWS = rows;
@@ -177,9 +178,15 @@ class Board {
         weaponCards.push(revolverCard);
 
 
+
+        let AllCards = weaponCards.concat(characterCards).concat(roomCards);
+        this.CARDS = AllCards;
+
+
         let envelopIndexWeapon = Board.getRandomInt(6);
         let envelopIndexRoom = Board.getRandomInt(9);
         let envelopIndexChar = Board.getRandomInt(6);
+
 
         // SETTING ENVELOP ON BOARD
         let envalop = new Envalop(weaponCards[envelopIndexWeapon],roomCards[envelopIndexRoom],characterCards[envelopIndexChar],
@@ -199,7 +206,9 @@ class Board {
 
         // shuffling cards and assign cards to players
 
-        let AllCards = weaponCards.concat(characterCards).concat(roomCards)
+        AllCards = weaponCards.concat(characterCards).concat(roomCards);
+
+
         AllCards = this.shuffle(AllCards)
         console.log(AllCards)
         var i=0

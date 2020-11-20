@@ -3,8 +3,9 @@ var mongoose = require('mongoose'),
 
 var BoardSchema = new Schema({
     board: {type: JSON, required: true},
-    game_id: {type: Number},
-    players: {type: JSON}
+    game_id: {type: Number, required: true, unique: true},
+    players: {type: JSON},
+    cards:{type:JSON}
 });
 
 BoardSchema.pre('save', function (next) {

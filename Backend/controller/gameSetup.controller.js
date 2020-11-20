@@ -94,62 +94,76 @@ exports.startGame = (req, res) => {
     let game_id = req.body.game_id;
     let NumberOfPlayers = req.body.number_of_players;
 
-    let board = new Board(24, 24);
-    if (board) {
+    BoardModal.findOne({game_id: game_id}, function (err, data) {
+        if (data) {
+            res.status(200).send({
+                board: data.BOARD,
+                players: data.players,
+                cards: data.cards,
+                game_id: data.game_id,
+                message: "Board already exist"
+            });
+        } else {
+            let board = new Board(24, 24);
+            if (board) {
 
-        let players = [];
-        // generate players
+                let players = [];
+                // generate players
 
-        let temp = Character.CharacterSpec.slice();
+                let temp = Character.CharacterSpec.slice();
 
-        for (let x = 0; x < NumberOfPlayers; x++) {
+                for (let x = 0; x < NumberOfPlayers; x++) {
+                    let index = Board.getRandomInt(6 - x);
+                    let character = new Character.Character(temp[index].name, temp[index].color);
+                    temp.splice(index, 1);
+                    players.push(new Player(x, character));
+                }
 
-            let index = Board.getRandomInt(6 - x);
+                board.generateNewBoard(NumberOfPlayers, players);
 
-            let character = new Character.Character(temp[index].name, temp[index].color);
-
-            temp.splice(index, 1);
-
-            players.push(new Player(x, character));
-        }
-
-        board.generateNewBoard(NumberOfPlayers, players);
-
-        let _board = new BoardModal({
-            board: board.BOARD,
-            players: players,
-            game_id: game_id,
-        });
-
-        _board.save(function (err, data) {
-            if (err) throw err;
-
-            if (data) {
-                res.status(200).send({
+                let _board = new BoardModal({
                     board: board.BOARD,
                     players: players,
-                    message: "Board generated successfully"
+                    game_id: game_id,
+                    cards: board.CARDS
+                });
+
+                _board.save(function (err, data) {
+                    if (err) throw err;
+
+                    if (data) {
+                        res.status(200).send({
+                            board: board.BOARD,
+                            players: players,
+                            cards: board.CARDS,
+                            game_id: game_id,
+                            message: "New board generated successfully"
+                        });
+                    } else {
+                        res.status(400).send({
+                            message: "Bad request"
+                        });
+                    }
                 });
             } else {
-                res.status(400).send({
-                    message: "Bad request"
+                res.status(500).send({
+                    message: "Board not generated"
                 });
             }
-        });
-    } else {
-        res.status(500).send({
-            message: "Board not generated"
-        });
-    }
+        }
+    });
 };
 
 exports.getGame = (req, res) => {
     let game_id = req.body.game_id;
 
-    BoardModal.find({'game_id': game_id}, function (err, board) {
-        if (games) {
+    BoardModal.findOne({'game_id': game_id}, function (err, board) {
+        if (board) {
             res.status(200).send({
-                board: board,
+                board: board.board,
+                players: board.players,
+                cards: board.cards,
+                game_id: board.game_id,
                 success: true
             });
         } else {

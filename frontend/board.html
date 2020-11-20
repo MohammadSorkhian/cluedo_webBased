@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 
-    <head>
-        <link rel="stylesheet" href="css/board.css">
-      </head>
+<head>
+    <link rel="stylesheet" href="css/board.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
 
 <body>
 
@@ -12,28 +13,52 @@
 
 <div class="row">
 
-  <div class="col-6">
-    <canvas id="myCanvas">
-      Your browser does not support the HTML canvas tag.</canvas>
-  </div>
+    <div class="col-6">
+        <canvas id="myCanvas">
+            Your browser does not support the HTML canvas tag.
+        </canvas>
+    </div>
+
+    <div class="col-6">
+        <div class="row">
+            <div class="header col-12">
+                <input id="toggleSheet" type="button" class="w3-button w3-pink" value="Toggle sheet">
+                <input id="rollDice" type="button" class="w3-button w3-pink" value="Roll Dice">
+            </div>
+        </div>
+        <span id="currentPlayer" style="padding:5px;display:none"></span>
+
+      <div class="row">
+        <div class="col-12" style="padding:5px;">
+          <canvas id="dieCanvas">
+            Your browser does not support the HTML canvas tag.
+          </canvas>
+        </div>
+      </div>
 
 
-<div>
-  <div class="header col-5">
-    <h2>Game Information</h2>
-  </div>
-  
-  <div class="col-3" style="padding:300px">
-  <canvas id="dieCanvas">
-    Your browser does not support the HTML canvas tag.
-  </canvas>
-  </div>
+        <div class="col-2" style="padding:5px">
+            <table id="cluesheet" class="w3-table-all">
+            </table>
+        </div>
+        <div class="col-2 w3-container" style="padding:5px;display:block">
+            <table id="cards" class="w3-table-all">
+                <thead>
+                <tr class="w3-yellow">
+                    <th>My cards</th>
+                </tr>
+                <tr>
+
+                </tr>
+            </table>
+        </div>
+    </div>
 
 </div>
 
-
-<script src="js\boardlayout.js"></script>
-<script src="js\die.js"></script>
+<script src="js/jquery-3.5.1.js"></script>
+<script src="js/boardlayout.js"></script>
+<script src="js/die.js"></script>
 
 </body>
 </html>

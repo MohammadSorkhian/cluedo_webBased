@@ -1,3 +1,35 @@
+let players = [];
+let cards = [];
+
+$( document ).ready(function() {
+
+    let Game = JSON.parse(localStorage.getItem('game'));
+
+    if(Game === null || Game === undefined){
+        window.location.href = '../dashboard.html';
+    }
+
+    $.ajax({
+        url: "http://localhost:3000/get-game",
+        type: "POST",
+        data: {
+            game_id: Game.id,
+        },
+        success: function (result, textStatus, jqXHR) {
+
+            console.log(result);
+            players = result.players;
+            cards = result.cards;
+            createClueSheetTable();
+            createMyCardsTable(players[0]);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("Error: " + errorThrown);
+        }
+    });
+
+});
+
 
 
 var c = document.getElementById("myCanvas");
@@ -7,7 +39,7 @@ var canvas = ctx.canvas;
 ctx.canvas.width  = 960;
 ctx.canvas.height = 960;
 
-document.onmouseup=getXYPosition;
+//document.onmouseup=getXYPosition;
 
 ctx.shadowBlur = 20;
 ctx.shadowColor = "black";
@@ -85,12 +117,6 @@ draw();
 
 function draw(){
 
-    ctx.beginPath();
-    ctx.arc(940, 260, 15, 0, 2 * Math.PI);
-    ctx.stroke();
-    ctx.fillStyle = "yellow";
-    ctx.fill();
-    ctx.closePath();
     setInterval(redraw, 1000);
 
 }
@@ -119,11 +145,19 @@ function redraw() {
     ctx.drawImage(library,0,240);
     ctx.drawImage(cellar,360,320);
 
+    layPlayersOnTheBoard(players);
+
     ctx.beginPath();
-    ctx.arc(900, 260, 15, 0, 2 * Math.PI);
     ctx.stroke();
-    ctx.fillStyle = "yellow";
-    ctx.fill();
+    ctx.font = "20px Comic Sans MS";
+    ctx.fillStyle = "white";
+    ctx.textAlign = "center";
+    ctx.fillText("CandleStick", 180, 100);
+    ctx.fillText("Knife", 460, 100);
+    ctx.fillText("Lead Pipe", 780, 140);
+    ctx.fillText("Revolver", 180, 900);
+    ctx.fillText("Revolver", 780, 900);
+    ctx.fillText("Wrench", 780, 500);
     ctx.closePath();
 
 }
@@ -136,14 +170,126 @@ function getXYPosition(e){
 myMouseX=(e||event).clientX;
 myMouseY=(e||event).clientY;
 if (document.documentElement.scrollTop > 0) {
-myMouseY = myMouseY + document.documentElement.scrollTop;
+    myMouseY = myMouseY + document.documentElement.scrollTop;
 }
 if (xyOn) {
-alert("X is " + myMouseX + "\nY is " + myMouseY);
+    alert("X is " + myMouseX + "\nY is " + myMouseY);
 }
 }
 function toggleXY() {
-xyOn = !xyOn;
-document.getElementById('xyLink').blur();
-return false;
+    xyOn = !xyOn;
+    document.getElementById('xyLink').blur();
+    return false;
+}
+
+
+function layPlayersOnTheBoard(players){
+    if(players == null) return;
+
+    for(let i=0;i<players.length;i++){
+        ctx.beginPath();
+        ctx.stroke();
+        ctx.fillStyle = players[i].playerCharacterObject.color;
+        if(players[i].playerCharacterObject.name=="Colonel Mustard"){
+            ctx.arc(940, 260, 15, 0, 2 * Math.PI);
+        }
+        if(players[i].playerCharacterObject.name=="Professor Plum"){
+            ctx.arc(20, 220, 15, 0, 2 * Math.PI);
+        }
+        if(players[i].playerCharacterObject.name=="Mrs. Peacock"){
+            ctx.arc(20, 740, 15, 0, 2 * Math.PI);
+        }
+        if(players[i].playerCharacterObject.name=="Mrs. White"){
+            ctx.arc(580, 940, 15, 0, 2 * Math.PI);
+        }
+        if(players[i].playerCharacterObject.name=="Mr Green"){
+            ctx.arc(380, 940, 15, 0, 2 * Math.PI);
+        }
+        if(players[i].playerCharacterObject.name=="Miss Scarlet"){
+            ctx.arc(660, 20, 15, 0, 2 * Math.PI);
+        }
+        ctx.fill();
+        ctx.closePath();
+    }
+
+  /*   if(players.length >=1){
+        ctx.beginPath();
+        ctx.arc(940, 260, 15, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.fillStyle = "yellow";
+        ctx.fill();
+        ctx.closePath();
+    }
+    if(players.length >=2){
+        ctx.beginPath();
+        ctx.arc(20, 220, 15, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.fillStyle = "purple";
+        ctx.fill();
+        ctx.closePath();
+    }
+    if(players.length >=3){
+        ctx.beginPath();
+        ctx.arc(20, 740, 15, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.fillStyle = "blue";
+        ctx.fill();
+        ctx.closePath();
+    }
+    if(players.length >=4){
+        ctx.beginPath();
+        ctx.arc(380, 940, 15, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.fillStyle = "green";
+        ctx.fill();
+        ctx.closePath();
+    }
+    if(players.length >=4){
+        ctx.beginPath();
+        ctx.arc(580, 940, 15, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.fillStyle = "white";
+        ctx.fill();
+        ctx.closePath();
+    }
+    if(players.length >=4){
+        ctx.beginPath();
+        ctx.arc(660, 20, 15, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.fillStyle = "red";
+        ctx.fill();
+        ctx.closePath();
+    } */
+}
+
+let toggleSheet = document.getElementById('toggleSheet');
+toggleSheet.onclick = function(){
+    $("#cluesheet").toggle();
+    $("#cards").toggle();
+}
+
+function createClueSheetTable(){
+    $('#cluesheet').append('<thead> <tr class="w3-yellow">');
+    $('#cluesheet').append('<th>&#8625;</th>');
+    for(let i=0;i<players.length;i++){
+        $('#cluesheet').append('<th>'+players[i].playerCharacterObject.name+'</th>');
+    }
+    $('#cluesheet').append('</tr> </thead>');
+    for(let j=0;j<cards.length;j++){
+        $('#cluesheet').append('<tr>');
+        $('#cluesheet').append('<td>'+cards[j].name+'</td>');
+        for(let i=0;i<players.length;i++){
+            $('#cluesheet').append('<td><input type="checkbox" name='+ cards[j].name+'-'+players[i].name+' />&nbsp;</td>');
+        }
+        $('#cluesheet').append('</tr>');
+    }
+    $("#cluesheet").toggle();
+}
+
+function createMyCardsTable(player){
+    for(let j=0;j<player.cards.length;j++){
+        $('#cards').append('<tr>');
+        $('#cards').append('<td>'+player.cards[j].name+'</td>');
+        $('#cards').append('</tr>');
+    }
 }

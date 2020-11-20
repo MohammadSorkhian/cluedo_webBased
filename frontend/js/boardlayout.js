@@ -156,7 +156,7 @@ function redraw() {
     ctx.fillText("Knife", 460, 100);
     ctx.fillText("Lead Pipe", 780, 140);
     ctx.fillText("Revolver", 180, 900);
-    ctx.fillText("Revolver", 780, 900);
+    ctx.fillText("Rope", 780, 900);
     ctx.fillText("Wrench", 780, 500);
     ctx.closePath();
 

@@ -34,7 +34,7 @@
                            aria-controls="pills-sheet" aria-selected="false">Toogle Sheet</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="rollDice" data-toggle="pill" href="#pills-dice" role="tab"
+                        <a class="nav-link" id="roll-Dice" data-toggle="pill" href="#pills-dice" role="tab"
                            aria-controls="pills-dice" aria-selected="false">Roll Dice</a>
                     </li>
                 </ul>
@@ -203,7 +203,14 @@
                             <table class="table table-dark users-table table-hover" id="cluesheet"></table>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="pills-dice" role="tabpanel" aria-labelledby="rollDice">
+                    <div class="tab-pane fade" id="pills-dice" role="tabpanel" aria-labelledby="roll-Dice">
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                <button id="rollDice" type="button" class="btn btn-danger btn-block" value="Roll Dice">
+                                    Roll Dice
+                                </button>
+                            </div>
+                        </div>
                         <div class="dieDiv">
                             <canvas id="dieCanvas">
                                 Your browser does not support the HTML canvas tag.

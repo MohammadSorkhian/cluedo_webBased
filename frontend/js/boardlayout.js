@@ -308,7 +308,8 @@ function playersTabsTable(players) {
         player_table_html += '<ul class="list-inline mb-0 mt-2 cards-ul">';
         for(let y =0; y <players[x].cards.length;y++){
             player_table_html += '<li class="list-inline-item">' +
-                '<div class="card-div">' +
+                // For blur card add and remove "blur" class
+                '<div class="card-div blur">' +
                 players[x].cards[y].name +
                 '</div>' +
                 '</li>';

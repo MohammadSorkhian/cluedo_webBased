@@ -93,7 +93,7 @@
     min-height: calc(100vh - 250px);
 }
 .users-table-wrap.for-playerTabs{
-    min-height: calc(100vh - 85px);
+    min-height: calc(100vh - 140px);
 }
 .users-table thead tr th {
     /*position: sticky;*/

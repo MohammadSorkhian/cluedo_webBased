@@ -5,7 +5,7 @@ const  CharacterSpec = [
         position:[23,7]
         },
         {name : 'Miss Scarlet',
-        color:"#ffbf00",
+        color:"#ff0000",
         position:[16,23]
         },
         {name : 'Professor Plum',

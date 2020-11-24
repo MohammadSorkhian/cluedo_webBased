@@ -22,6 +22,7 @@ $( document ).ready(function() {
             cards = result.cards;
             createClueSheetTable();
             createMyCardsTable(players[0]);
+            playersTabsTable(players);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             alert("Error: " + errorThrown);
@@ -264,12 +265,12 @@ function layPlayersOnTheBoard(players){
 
 let toggleSheet = document.getElementById('toggleSheet');
 toggleSheet.onclick = function(){
-    $("#cluesheet").toggle();
+    // $("#cluesheet").toggle();
     $("#cards").toggle();
 }
 
 function createClueSheetTable(){
-    $('#cluesheet').append('<thead> <tr class="w3-yellow">');
+    $('#cluesheet').append('<thead> <tr>');
     $('#cluesheet').append('<th>&#8625;</th>');
     for(let i=0;i<players.length;i++){
         $('#cluesheet').append('<th>'+players[i].playerCharacterObject.name+'</th>');
@@ -283,7 +284,8 @@ function createClueSheetTable(){
         }
         $('#cluesheet').append('</tr>');
     }
-    $("#cluesheet").toggle();
+
+    // $("#cluesheet").toggle();
 }
 
 function createMyCardsTable(player){
@@ -292,4 +294,46 @@ function createMyCardsTable(player){
         $('#cards').append('<td>'+player.cards[j].name+'</td>');
         $('#cards').append('</tr>');
     }
+}
+function playersTabsTable(players) {
+    let resume_game_table_prefix_html = '<div class="table-responsive users-table-wrap for-playerTabs"><table class="table table-dark users-table table-hover"><thead><tr><th>Players</th><th>Status</th><th>Characters</th></tr></thead><tbody>';
+
+    let player_table_html = resume_game_table_prefix_html;
+    let x;
+    for (x = 0; x < players.length; x++) {
+        player_table_html += '<tr><td scope="row"><div class="media align-items-center"><div class="imgDiv avatar d-flex ml-1 mr-2"><img class="img" src="https://lh3.googleusercontent.com/prMkp6oKRY4iNucqeZjdplEO4zaeD2KjU6DzruS1PJUzXO_x9xVSZI6Dti6FERItz_8N" alt=""/></div><div class="media-body"><div>' + players[x].username + '</div></div>';
+
+        player_table_html += '</div>';
+
+        player_table_html += '<ul class="list-inline mb-0 mt-2 cards-ul">';
+        for(let y =0; y <players[x].cards.length;y++){
+            player_table_html += '<li class="list-inline-item">' +
+                // For blur card add and remove "blur" class
+                '<div class="card-div blur">' +
+                players[x].cards[y].name +
+                '</div>' +
+                '</li>';
+        }
+        player_table_html += '</ul>'+
+            '</td><td><i class="fa fa-check fa-2x text-success" aria-hidden="true"></i>'+
+            '</td>';
+
+        player_table_html +=
+            '<td><div class="media align-items-center">'+
+            '<div class="imgDiv avatar d-flex ml-1 mr-2">' +
+            '<img class="img" src="images/'+players[x].playerCharacterObject.name+'.jpg" =""/>' +
+            '</div>'+
+            '<div class="media-body">' +
+            '<div>'+players[x].playerCharacterObject.name+'</div>' +
+            '</div>' +
+            '</div>' +
+            '</td>'+
+            '</tr>';
+    }
+    player_table_html += '</tbody></table></div>';
+
+
+    $("#PlayersTabTable").html('');
+    $("#PlayersTabTable").html(player_table_html);
+
 }

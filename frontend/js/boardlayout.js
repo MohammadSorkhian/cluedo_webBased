@@ -96,7 +96,7 @@ function RequestToMove(movetorow,movetocol) {
             game_id: Game.id,
             player: JSON.parse(localStorage.getItem("user_data")).data.profile,
             movetorow : movetorow,
-            movetocol : movetocol
+            movetocol : movetocol,
         },
         success: function (result, textStatus, jqXHR) {
 

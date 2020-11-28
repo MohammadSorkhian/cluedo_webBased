@@ -1,9 +1,10 @@
 let players = [];
 let cards = [];
 
+let Game = JSON.parse(localStorage.getItem('game'));
+
 $( document ).ready(function() {
 
-    let Game = JSON.parse(localStorage.getItem('game'));
 
     if(Game === null || Game === undefined){
         window.location.href = '../dashboard.html';
@@ -23,6 +24,8 @@ $( document ).ready(function() {
             createClueSheetTable();
             createMyCardsTable(players[0]);
             playersTabsTable(players);
+
+            getUpdatedBoard(6);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             alert("Error: " + errorThrown);
@@ -31,7 +34,84 @@ $( document ).ready(function() {
 
 });
 
+function getUpdatedBoard(diceCount) {
 
+    if(players[0].isPlayerTurn) {
+        $.ajax({
+            url: "http://localhost:3000/get-updated-board",
+            type: "POST",
+            data: {
+                game_id: Game.id,
+                player: JSON.parse(localStorage.getItem("user_data")).data.profile,
+                diceCount : diceCount
+
+            },
+            success: function (result, textStatus, jqXHR) {
+
+                if (result.success) {
+                    console.log(result.board)
+                }
+                else {
+                    alert(result.message)
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log("Error: " + errorThrown.toString() + ' ' + textStatus.toString());
+            }
+        });
+
+    }else{
+
+        $.ajax({
+            url: "http://localhost:3000/get-updated-board",
+            type: "POST",
+            data: {
+                game_id: Game.id,
+                player: JSON.parse(localStorage.getItem("user_data")).data.profile
+            },
+            success: function (result, textStatus, jqXHR) {
+
+                if (result.success) {
+
+                } else {
+                    console.log(result.board)
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error: " + errorThrown.toString() + ' ' + textStatus.toString());
+            }
+        });
+    }
+}
+
+
+function RequestToMove(movetorow,movetocol) {
+
+    // ON FRONT END PLEASE DO CHECK IF THE MOVE IS POSSIBLE OR NOT
+
+    $.ajax({
+        url: "http://localhost:3000/move-player",
+        type: "POST",
+        data: {
+            game_id: Game.id,
+            player: JSON.parse(localStorage.getItem("user_data")).data.profile,
+            movetorow : movetorow,
+            movetocol : movetocol,
+        },
+        success: function (result, textStatus, jqXHR) {
+
+            if (result.success) {
+
+            }
+            else {
+
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert("Error: " + errorThrown.toString() + ' ' + textStatus.toString());
+        }
+    });
+}
 
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");

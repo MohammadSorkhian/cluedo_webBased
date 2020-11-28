@@ -1,8 +1,8 @@
 class Tile {
 
-    name = null;
+    name = 'tile';
     player = null;
-
+    highlight = false;
 }
 
 module.exports = Tile;

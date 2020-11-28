@@ -10,7 +10,6 @@ var GameSchema = new Schema({
     init_players_count: {type: Number, required: true},
     final_players_count: {type: Number},
     players: {type: JSON, required: true},
-    board_id: {type: Number},
     is_game_completed: {type: Boolean, default: false}
 });
 

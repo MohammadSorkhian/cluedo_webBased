@@ -230,8 +230,11 @@ class Board {
                 if(Character.CharacterSpec[x].name === players[y].playerCharacterObject.name) {
 
                     console.log(Character.CharacterSpec[x].name);
+                    console.log(Character.CharacterSpec[x].position[1]);
+                    console.log(Character.CharacterSpec[x].position[0]);
 
                     this.BOARD[Character.CharacterSpec[x].position[1]][Character.CharacterSpec[x].position[0]].player = players[y];
+
                     break;
                 }
             }
@@ -261,9 +264,6 @@ class Board {
     static getRandomInt(max) {
         return Math.floor(Math.random() * Math.floor(max));
     }
-
-
-
 
 }
 

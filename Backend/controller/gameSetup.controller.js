@@ -6,6 +6,7 @@ let Character = require('./Character.js');
 
 
 exports.setupGame = (req, res) => {
+
     let players = req.body.players;
     let host = req.body.host;
     NumberOfPlayers = players.length;
@@ -96,6 +97,7 @@ exports.startGame = (req, res) => {
 
     BoardModal.findOne({game_id: game_id}, function (err, data) {
         if (data) {
+
             res.status(200).send({
                 board: data.BOARD,
                 players: data.players,
@@ -103,53 +105,74 @@ exports.startGame = (req, res) => {
                 game_id: data.game_id,
                 message: "Board already exist"
             });
-        } else {
-            let board = new Board(24, 24);
-            if (board) {
+        }
+        else {
 
-                let players = [];
-                // generate players
+            Game.findOne({'id': game_id}, function (err, game) {
 
-                let temp = Character.CharacterSpec.slice();
+                if (game) {
 
-                for (let x = 0; x < NumberOfPlayers; x++) {
-                    let index = Board.getRandomInt(6 - x);
-                    let character = new Character.Character(temp[index].name, temp[index].color);
-                    temp.splice(index, 1);
-                    players.push(new Player(x, character));
-                }
+                    let board = new Board(24, 24);
+                    if (board) {
 
-                board.generateNewBoard(NumberOfPlayers, players);
+                        let players = [];
+                        // generate players
 
-                let _board = new BoardModal({
-                    board: board.BOARD,
-                    players: players,
-                    game_id: game_id,
-                    cards: board.CARDS
-                });
+                        let temp = Character.CharacterSpec.slice();
 
-                _board.save(function (err, data) {
-                    if (err) throw err;
+                        for (let x = 0; x < NumberOfPlayers; x++) {
 
-                    if (data) {
-                        res.status(200).send({
+                            let index = Board.getRandomInt(6 - x);
+                            let character = new Character.Character(temp[index].name, temp[index].color);
+                            temp.splice(index, 1);
+                            players.push(new Player(x, character));
+
+                            if (x === 0) {
+                                players[x].isPlayerTurn = true;
+                            }
+
+                            players[x].id = game.players[x].id;
+                            players[x].playerName = game.players[x].username;
+                        }
+
+                        board.generateNewBoard(NumberOfPlayers, players);
+
+                        let _board = new BoardModal({
                             board: board.BOARD,
                             players: players,
-                            cards: board.CARDS,
                             game_id: game_id,
-                            message: "New board generated successfully"
+                            cards: board.CARDS
+                        });
+
+                        _board.save(function (err, data) {
+                            if (err) throw err;
+
+                            if (data) {
+                                res.status(200).send({
+                                    board: board.BOARD,
+                                    players: players,
+                                    cards: board.CARDS,
+                                    game_id: game_id,
+                                    message: "New board generated successfully"
+                                });
+                            } else {
+                                res.status(400).send({
+                                    message: "Bad request"
+                                });
+                            }
                         });
                     } else {
-                        res.status(400).send({
-                            message: "Bad request"
+                        res.status(500).send({
+                            message: "Board not generated"
                         });
                     }
-                });
-            } else {
-                res.status(500).send({
-                    message: "Board not generated"
-                });
-            }
+
+                } else {
+                    res.status(400).send({
+                        message: "Bad request"
+                    });
+                }
+            });
         }
     });
 };
@@ -177,3 +200,302 @@ exports.getGame = (req, res) => {
 };
 
 
+exports.getUpdatedBoardStates = (req, res) => {
+
+    let game_id = req.body.game_id;
+    let RequestingPlayer = req.body.player;
+    let DiceCount  = req.body.diceCount;
+
+    Game.findOne({'id': game_id}, function (err, game) {
+
+        if (game) {
+
+            BoardModal.findOne({'game_id': game_id}, function (err, board) {
+
+                // console.log(board);
+                // console.log(game);
+
+                if (board) {
+
+                    let players = null;
+                    let boardArray = null;
+
+                    // CHECK IF THIS IS THE CURRENT PLAYER TURN
+
+                    players = board.players;
+                    boardArray = board.board;
+
+                    for (let x = 0; x < players.length; x++) {
+
+                        if (players[x].id === RequestingPlayer.id) {
+
+                            if(players[x].isPlayerTurn){
+
+                                if(DiceCount){
+
+                                    for(let r=0;r<24;r++){
+
+                                        for(let c=0;c<24;c++){
+
+                                            if(boardArray[r][c].player){
+
+                                                console.log(boardArray[r][c].player.id)
+                                                console.log(RequestingPlayer.id)
+
+                                                if(boardArray[r][c].player.id === RequestingPlayer.id) {
+
+                                                    console.log('here '+r + '  ' + c);
+
+                                                    findThePotentialDestinations(boardArray,r,c,DiceCount)
+                                                    findThePotentialDestinations2(boardArray,r,c,DiceCount)
+                                                    findThePotentialDestinations3(boardArray,r,c,DiceCount)
+                                                    findThePotentialDestinations4(boardArray,r,c,DiceCount)
+
+                                                    res.status(200).send({
+                                                        board : boardArray,
+                                                        success: true
+                                                    });
+
+                                                    return;
+                                                }
+                                            }
+
+                                        }
+                                    }
+
+                                }
+                                else{
+                                    res.status(200).send({
+                                        message: "You need to send the dice count it's your turn",
+                                        success: false
+                                    });
+
+                                    return;
+                                }
+                            }
+
+                            break;
+                        }
+
+                    }
+
+                    res.status(200).send({
+                        board : boardArray,
+                        success: true
+                    });
+
+                    return;
+                }
+                else {
+                    res.status(400).send({
+                        message: "Bad request",
+                        success: false
+                    });
+                }
+            });
+
+        }
+        else {
+            res.status(400).send({
+                message: err,
+                success: false
+            });
+        }
+
+    });
+};
+
+
+exports.MovePlayer = (req, res) => {
+
+    let game_id = req.body.game_id;
+    let RequestingPlayer = req.body.player;
+    let moveToRow  = req.body.movetorow;
+    let moveToCol  = req.body.movetocol;
+    let DiceCount  = req.body.diceCount;
+
+    Game.findOne({'id': game_id}, function (err, game) {
+
+        if (game) {
+
+            BoardModal.findOne({'game_id': game_id}, function (err, board) {
+
+                if (board) {
+
+                    let players = null;
+                    let boardArray = null;
+
+                    // CHECK IF THIS IS THE CURRENT PLAYER TURN
+
+                    players = board.players;
+                    boardArray = board.board;
+
+                    for (let x = 0; x < players.length; x++) {
+
+                        if (players[x].id === RequestingPlayer.id) {
+
+                            if(players[x].isPlayerTurn){
+
+                                if(DiceCount){
+
+                                    for(let r=0;r<24;r++){
+
+                                        for(let c=0;c<24;c++){
+
+                                            if(boardArray[r][c].player){
+
+                                                console.log(boardArray[r][c].player.id)
+                                                console.log(RequestingPlayer.id)
+
+                                                if(boardArray[r][c].player.id === RequestingPlayer.id) {
+
+                                                    if(checkIfMoveIsPossible()) {
+
+                                                        res.status(200).send({
+                                                            board: boardArray,
+                                                            success: true
+                                                        });
+                                                    }
+                                                    else{
+
+                                                        res.status(400).send({
+                                                            message: "Move not possible!",
+                                                            success: false
+                                                        });
+
+
+                                                    }
+                                                    return;
+                                                }
+                                            }
+
+                                        }
+                                    }
+
+                                }
+                                else{
+                                    res.status(400).send({
+                                        message: "You need to send the dice count it's your turn",
+                                        success: false
+                                    });
+
+                                }
+                            }
+
+                            break;
+                        }
+
+                    }
+
+                    res.status(200).send({
+                        board : boardArray,
+                        success: true
+                    });
+
+                }
+                else {
+                    res.status(400).send({
+                        message: "Bad request",
+                        success: false
+                    });
+                }
+            });
+
+        }
+        else {
+            res.status(400).send({
+                message: err,
+                success: false
+            });
+        }
+
+    });
+};
+
+
+function checkIfMoveIsPossible(board,moveToRow,moveToCol,playerRow,playerCol,diceCount) {
+
+    let rowDiff = moveToRow - playerRow;
+    let colDiff = moveToCol - playerCol;
+
+    if(rowDiff < 0)
+        rowDiff = rowDiff * -1;
+
+    if(colDiff < 0)
+        colDiff = colDiff * -1;
+
+    if(colDiff+colDiff > diceCount){
+        return false;
+    }
+
+    return  true;
+}
+
+
+
+function findThePotentialDestinations(board,row,col,dice){
+
+    if(row >= 24 || col >= 24 || row < 0 || col < 0  ||dice === 0 || board[row][col].name === 'room'){
+        return;
+    }
+    else{
+
+        board[row][col+1].highlight = true;
+        findThePotentialDestinations(board,row,col-1,dice-1);
+        findThePotentialDestinations2(board,row,col-1,dice-1);
+        findThePotentialDestinations3(board,row,col-1,dice-1);
+        findThePotentialDestinations4(board,row,col-1,dice-1);
+    }
+
+}
+
+function findThePotentialDestinations2(board,row,col,dice){
+
+    if(row >= 24 || col >= 24 || row < 0 || col < 0  ||dice === 0 || board[row][col].name === 'room'){
+        return;
+    }
+    else{
+
+        board[row][col+1].highlight = true;
+        findThePotentialDestinations2(board,row,col+1,dice-1);
+        findThePotentialDestinations(board,row,col+1,dice-1);
+        findThePotentialDestinations3(board,row,col+1,dice-1);
+        findThePotentialDestinations4(board,row,col+1,dice-1);
+
+    }
+
+}
+
+function findThePotentialDestinations3(board,row,col,dice){
+
+    if(row >= 24 || col >= 24 || row < 0 || col < 0  ||dice === 0 || board[row][col].name === 'room'){
+        return;
+    }
+    else{
+
+        board[row][col+1].highlight = true;
+        findThePotentialDestinations3(board,row+1,col,dice-1);
+        findThePotentialDestinations(board,row+1,col,dice-1);
+        findThePotentialDestinations2(board,row+1,col,dice-1);
+        findThePotentialDestinations4(board,row+1,col,dice-1);
+
+    }
+
+}
+
+function findThePotentialDestinations4(board,row,col,dice){
+
+    if(row >= 24 || col >= 24 || row < 0 || col < 0  ||dice === 0 || board[row][col].name === 'room'){
+        return;
+    }
+    else{
+
+        board[row][col+1].highlight = true;
+        findThePotentialDestinations4(board,row-1,col,dice-1);
+        findThePotentialDestinations(board,row-1,col,dice-1);
+        findThePotentialDestinations2(board,row-1,col,dice-1);
+        findThePotentialDestinations3(board,row-1,col,dice-1);
+
+    }
+
+}

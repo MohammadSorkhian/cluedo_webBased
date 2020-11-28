@@ -2,7 +2,9 @@ class Player{
 
     playerID;
     playerCharacterObject;
-    cards = []
+    cards = [];
+    isPlayerTurn = false;
+    playerName = '';
 
     constructor(playerID, playerCharacterObject) {
         this.playerID = playerID;

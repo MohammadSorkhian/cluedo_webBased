@@ -283,7 +283,19 @@ $('#myCanvas').mouseup(function(e) {
             && e.clientX < highLightedTiles[i].boundRect.width
             && e.clientY < highLightedTiles[i].boundRect.height ) {
                 console.log(highlightedTile);
-                RequestToMove(highLightedTiles[i].boardY,highLightedTiles[i].boardX);
+
+                let found = false;
+                for(let x=0;x<roomDoors.length;x++){
+
+                    if(roomDoors[x].doorRowIndex === highLightedTiles[i].boardY && roomDoors[x].doorColIndex ===highLightedTiles[i].boardX ){
+                          found = true;
+                          RequestToMove(roomDoors[x].roomObject.startRowIndex, roomDoors[x].roomObject.startColumnIndex);
+                          break;
+                    }
+                }
+
+                if(!found)
+                    RequestToMove(highLightedTiles[i].boardY,highLightedTiles[i].boardX);
         }
     }
    //console.log(e.clientX+" "+e.clientY+" page"+e.pageX+" "+e.pageY+" rect "+rect.top+" "+rect.left);
@@ -309,6 +321,7 @@ function parseBoard(board) {
     tiles = [];
     players = [];
     highLightedTiles = [];
+    roomDoors = [];
 
     let rect = canvas.getBoundingClientRect();
     for(let i=0;i<board.length;i++){
@@ -347,6 +360,12 @@ function parseBoard(board) {
                         roomObject : tile
                     };
                     roomDoors.push(obj);
+
+                    if(tile.player != null) {
+                        tileXY = new TileXY("room",tile.player,20+(j*40),20+(i*40),j,i,tileRect);
+                        players.push(tileXY);
+                    }
+                    console.log(players)
 
                     console.log(obj.name+'  '+obj.doorRowIndex+'   '+obj.doorColIndex)
                     console.log(obj.roomObject)

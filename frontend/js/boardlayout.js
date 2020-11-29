@@ -21,11 +21,12 @@ $( document ).ready(function() {
         },
         success: function (result, textStatus, jqXHR) {
 
-            console.log(result);
+            //console.log(result);
             board = result.board;
             //players = result.players;
             cards = result.cards;
             parseBoard(board);
+            //console.log(result);
             createClueSheetTable();
             createMyCardsTable(players[0]);
             playersTabsTable(players);
@@ -40,8 +41,8 @@ $( document ).ready(function() {
 });
 
 function getUpdatedBoard(diceCount) {
-    players[0].isPlayerTurn = true;
-    if(players[0].isPlayerTurn) {
+    //players[0].isPlayerTurn = true;
+    if(players[0].name.isPlayerTurn) {
         $.ajax({
             url: "http://localhost:3000/get-updated-board",
             type: "POST",
@@ -54,8 +55,8 @@ function getUpdatedBoard(diceCount) {
             success: function (result, textStatus, jqXHR) {
 
                 if (result.success) {
-                    //console.log(result.board)
-                    parseBoard(result.board);
+                    console.log(result.board);
+                    parseBoard(result.board.board);
                 }
                 else {
                     alert(result.message)
@@ -78,7 +79,7 @@ function getUpdatedBoard(diceCount) {
             success: function (result, textStatus, jqXHR) {
 
                 if (result.success) {
-
+                    parseBoard(result.board);
                 } else {
                     console.log(result)
                 }
@@ -107,7 +108,8 @@ function RequestToMove(movetorow,movetocol) {
         success: function (result, textStatus, jqXHR) {
 
             if (result.success) {
-
+                board = result.board;
+                parseBoard(board);
             }
             else {
 
@@ -249,24 +251,35 @@ function findPos(obj) {
 $('#myCanvas').mouseup(function(e) {
     //const transform = ctx.getTransform();
     let rect = canvas.getBoundingClientRect(); 
-    let x = ((e.clientX-rect.x)/rect.width)*(960);
-    let y = ((e.clientY-rect.y)/rect.height)*(960);
-   console.log(e.clientX+" "+e.clientY+" page"+e.pageX+" "+e.pageY+" rect "+rect.top+" "+rect.left);
-   console.log(rect);
-   console.log(x,'-',y);
-    ctx.beginPath();
-    ctx.stroke();
-    ctx.fillStyle = 'red';
-    ctx.arc(x, y, 15, 0, 2 * Math.PI);
+    //let x = ((e.clientX-rect.x)/rect.width)*(960);
+    //let y = ((e.clientY-rect.y)/rect.height)*(960);
+    for(let i=0;i<highLightedTiles.length;i++){
+        let highlightedTile = highLightedTiles[i];
+        console.log(highlightedTile,"", e.clientX,e.clientY);
+        if(e.clientX > highLightedTiles[i].boundRect.x 
+            && e.clientY > highLightedTiles[i].boundRect.y 
+            && e.clientX < highLightedTiles[i].boundRect.width
+            && e.clientY < highLightedTiles[i].boundRect.height ) {
+                console.log(highlightedTile);
+                RequestToMove(highLightedTiles[i].boardX,highLightedTiles[i].boardY);
+        }
+    }
+   //console.log(e.clientX+" "+e.clientY+" page"+e.pageX+" "+e.pageY+" rect "+rect.top+" "+rect.left);
+   //console.log(rect);
+   //console.log(x,'-',y);
+    //ctx.beginPath();
+    //ctx.stroke();
+    //ctx.fillStyle = 'red';
+    //ctx.arc(x, y, 15, 0, 2 * Math.PI);
     //ctx.fillStyle = players[2].playerCharacterObject.color;
     //if(players[2].playerCharacterObject.name =="Mrs. Peacock"){
         //ctx.arc(940, 260, 15, 0, 2 * Math.PI);
         //ctx.arc(20, 740, 15, 0, 2 * Math.PI);
-        ctx.arc(x, y, 15, 0, 2 * Math.PI);
+        //ctx.arc(x, y, 15, 0, 2 * Math.PI);
         //alert('Hello');
    // }
-    ctx.fill();
-    ctx.closePath();
+    //ctx.fill();
+    //ctx.closePath();
 });
 
 function parseBoard(board) {
@@ -278,32 +291,33 @@ function parseBoard(board) {
     for(let i=0;i<board.length;i++){
         for(let j=0;j<board[i].length;j++){
             let tile = board[i][j];
-            let tileRect = getBoundingRectForTile(i,j,rect);
+            //console.log(tile);
+            let tileRect = getBoundingRectForTile(j*40,i*40,rect);
             if(tile.name == "tile" && tile.player == null){
-                tileXY = new TileXY("none","empty",20+(j*40),20+(i*40),j,i);
+                tileXY = new TileXY("none","empty",20+(j*40),20+(i*40),j,i,tileRect);
                 if(tile.highlight){
                     highLightedTiles.push(tileXY);
                 }
             }
             else if(tile.name == "tile" && tile.player != null){
                 //console.log(tile.player);
-                tileXY = new TileXY("player",tile.player.playerCharacterObject.name,20+(j*40),20+(i*40),j,i);
-                players.push(tile.player);
+                tileXY = new TileXY("player",tile.player,20+(j*40),20+(i*40),j,i,tileRect);
+                players.push(tileXY);
             }
             else{
-                tileXY = new TileXY("room",tile.name,20+(j*40),20+(i*40),j,i);
+                tileXY = new TileXY("room",tile.name,20+(j*40),20+(i*40),j,i,tileRect);
             }
             tiles.push(tileXY);
         }   
     }
-    //console.log(tiles);
+    //console.log(players);
 }
 
 draw();
 
 function draw(){
 
-    setInterval(redraw, 1000);
+    setInterval(redraw, 5000);
 
 }
 
@@ -390,25 +404,27 @@ function layPlayersOnTheBoard(players){
         ctx.beginPath();
         ctx.stroke();
         //console.log(players[i].playerCharacterObject);
-        ctx.fillStyle = players[i].playerCharacterObject.color;
-        if(players[i].playerCharacterObject.name=="Colonel Mustard"){
+        ctx.fillStyle = players[i].name.playerCharacterObject.color;
+        console.log(players[i]);
+        ctx.arc(players[i].canvasX, players[i].canvasY, 15, 0, 2 * Math.PI);
+/*         if(players[i].playerCharacterObject.name=="Colonel Mustard"){
             ctx.arc(940, 260, 15, 0, 2 * Math.PI);
         }
-        if(players[i].playerCharacterObject.name=="Professor Plum"){
+        if(players.player[i].playerCharacterObject.name=="Professor Plum"){
             ctx.arc(20, 220, 15, 0, 2 * Math.PI);
         }
-        if(players[i].playerCharacterObject.name=="Mrs. Peacock"){
+        if(players[i].player.playerCharacterObject.name=="Mrs. Peacock"){
             ctx.arc(20, 740, 15, 0, 2 * Math.PI);
         }
-        if(players[i].playerCharacterObject.name=="Mrs. White"){
+        if(players[i].player.playerCharacterObject.name=="Mrs. White"){
             ctx.arc(580, 940, 15, 0, 2 * Math.PI);
         }
-        if(players[i].playerCharacterObject.name=="Mr Green"){
+        if(players[i].player.playerCharacterObject.name=="Mr Green"){
             ctx.arc(380, 940, 15, 0, 2 * Math.PI);
         }
-        if(players[i].playerCharacterObject.name=="Miss Scarlet"){
+        if(players[i].player.playerCharacterObject.name=="Miss Scarlet"){
             ctx.arc(660, 20, 15, 0, 2 * Math.PI);
-        }
+        } */
         ctx.fill();
         ctx.closePath();
     }
@@ -468,7 +484,7 @@ function createClueSheetTable(){
     $('#cluesheet').append('<thead> <tr>');
     $('#cluesheet').append('<th>&#8625;</th>');
     for(let i=0;i<players.length;i++){
-        $('#cluesheet').append('<th>'+players[i].playerCharacterObject.name+'</th>');
+        $('#cluesheet').append('<th>'+players[i].name.playerCharacterObject.name+'</th>');
     }
     $('#cluesheet').append('</tr> </thead>');
     for(let j=0;j<cards.length;j++){
@@ -484,9 +500,9 @@ function createClueSheetTable(){
 }
 
 function createMyCardsTable(player){
-    for(let j=0;j<player.cards.length;j++){
+    for(let j=0;j<player.name.cards.length;j++){
         $('#cards').append('<tr>');
-        $('#cards').append('<td>'+player.cards[j].name+'</td>');
+        $('#cards').append('<td>'+player.name.cards[j].name+'</td>');
         $('#cards').append('</tr>');
     }
 }
@@ -501,11 +517,11 @@ function playersTabsTable(players) {
         player_table_html += '</div>';
 
         player_table_html += '<ul class="list-inline mb-0 mt-2 cards-ul">';
-        for(let y =0; y <players[x].cards.length;y++){
+        for(let y =0; y <players[x].name.cards.length;y++){
             player_table_html += '<li class="list-inline-item">' +
                 // For blur card add and remove "blur" class
                 '<div class="card-div blur">' +
-                players[x].cards[y].name +
+                players[x].name.cards[y].name +
                 '</div>' +
                 '</li>';
         }
@@ -516,10 +532,10 @@ function playersTabsTable(players) {
         player_table_html +=
             '<td><div class="media align-items-center">'+
             '<div class="imgDiv avatar d-flex ml-1 mr-2">' +
-            '<img class="img" src="images/'+players[x].playerCharacterObject.name+'.jpg" =""/>' +
+            '<img class="img" src="images/'+players[x].name.playerCharacterObject.name+'.jpg" =""/>' +
             '</div>'+
             '<div class="media-body">' +
-            '<div>'+players[x].playerCharacterObject.name+'</div>' +
+            '<div>'+players[x].name.playerCharacterObject.name+'</div>' +
             '</div>' +
             '</div>' +
             '</td>'+
@@ -533,21 +549,29 @@ function playersTabsTable(players) {
 
 }
 
-function TileXY(type, name, canvasX, canvasY,boardX,boardY,boundRectX,boundRectY,boundRectWidth,boundRectHeight) {
+function TileXY(type, name, canvasX, canvasY,boardX,boardY,boundRect) {
     this.type = type;
     this.name = name;
     this.canvasX = canvasX;
     this.canvasY = canvasY;
     this.boardX = boardX;
     this.boardY = boardY;
-    this.boundRectX = boundRectX;
-    this.boundRectY = boundRectY;
-    this.boundRectWidth = boundRectWidth;
-    this.boundRectHeight = boundRectHeight;
+    this.boundRect = boundRect;
   }
 
   function getBoundingRectForTile(x,y,rect){
-    let boundRectX = (x/960)*(rect.width)+rect.x;
-    let boundRectY = (y/960)*(rect.height)+rect.y;
-    console.log(boundRectX,' ',boundRectY);
+    //console.log(rect);
+    let boundRectX = (x/960)*(rect.width);
+    let boundRectY = (y/960)*(rect.height);
+    let boundRectWidth = ((x+40)/960)*(rect.width)+rect.x;
+    let boundRectHeight = ((y+40)/960)*(rect.height)+rect.y;
+    let boundRect = new BoundingRect(boundRectX,boundRectY,boundRectWidth,boundRectHeight);
+    return boundRect;
+  }
+
+  function BoundingRect(x,y,width,height){
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
   }

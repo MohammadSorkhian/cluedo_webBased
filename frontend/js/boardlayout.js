@@ -1,8 +1,10 @@
 let players = [];
+let playersFromServer = [];
 let cards = [];
 let board = [];
 let tiles = [];
 let highLightedTiles = [];
+let diceCount = null;
 
 let Game = JSON.parse(localStorage.getItem('game'));
 
@@ -23,49 +25,61 @@ $( document ).ready(function() {
 
             console.log(result);
             board = result.board;
-            //players = result.players;
+            playersFromServer = result.players;
             cards = result.cards;
-            parseBoard(board);
-            //console.log(result);
-            createClueSheetTable();
-            createMyCardsTable(players[0]);
-            playersTabsTable(players);
 
-            //getUpdatedBoard(6);
+            parseBoard(board);
+            createClueSheetTable();
+            createMyCardsTable(playersFromServer[0]);
+            playersTabsTable(playersFromServer);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             alert("Error: " + errorThrown);
         }
     });
 
+
 });
 
 function getUpdatedBoard(diceCount) {
-    console.log(players);
-    if(players[0] != null && players[0].name.isPlayerTurn) {
-        $.ajax({
-            url: "http://localhost:3000/get-updated-board",
-            type: "POST",
-            data: {
-                game_id: Game.id,
-                player: JSON.parse(localStorage.getItem("user_data")).data.profile,
-                diceCount : diceCount
 
-            },
-            success: function (result, textStatus, jqXHR) {
 
-                if (result.success) {
-                    console.log(result.board.board);
-                    parseBoard(result.board.board);
+    if(playersFromServer != null && playersFromServer[0].isPlayerTurn) {
+
+        if(diceCount != null) {
+
+            $('#message').html("");
+
+            $.ajax({
+                url: "http://localhost:3000/get-updated-board",
+                type: "POST",
+                data: {
+                    game_id: Game.id,
+                    player: JSON.parse(localStorage.getItem("user_data")).data.profile,
+                    diceCount: diceCount
+
+                },
+                success: function (result, textStatus, jqXHR) {
+
+                    if (result.success) {
+
+                        console.log(result.board.board);
+                        parseBoard(result.board.board);
+                    }
+                    else {
+                        alert(result.message)
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log("Error: " + errorThrown.toString() + ' ' + textStatus.toString());
                 }
-                else {
-                    alert(result.message)
-                }
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log("Error: " + errorThrown.toString() + ' ' + textStatus.toString());
-            }
-        });
+            });
+        }
+        else{
+
+            $('#message').html("");
+            $('#message').html("Please roll the dice, because its your turn");
+        }
 
     }else{
 
@@ -111,6 +125,7 @@ function RequestToMove(movetorow,movetocol) {
             if (result.success) {
                 board = result.board;
                 console.log(board);
+                rollDice = null;
             }
             else {
 
@@ -345,7 +360,9 @@ function redraw() {
     ctx.drawImage(library,0,240);
     ctx.drawImage(cellar,360,320);
 
-    getUpdatedBoard(6);
+
+    getUpdatedBoard(diceCount);
+
     layPlayersOnTheBoard(players);
     highlightTiles();
 
@@ -483,15 +500,15 @@ function layPlayersOnTheBoard(players){
 function createClueSheetTable(){
     $('#cluesheet').append('<thead> <tr>');
     $('#cluesheet').append('<th>&#8625;</th>');
-    for(let i=0;i<players.length;i++){
-        $('#cluesheet').append('<th>'+players[i].name.playerCharacterObject.name+'</th>');
+    for(let i=0;i<playersFromServer.length;i++){
+        $('#cluesheet').append('<th>'+playersFromServer[i].playerCharacterObject.name+'</th>');
     }
     $('#cluesheet').append('</tr> </thead>');
     for(let j=0;j<cards.length;j++){
         $('#cluesheet').append('<tr>');
         $('#cluesheet').append('<td>'+cards[j].name+'</td>');
-        for(let i=0;i<players.length;i++){
-            $('#cluesheet').append('<td><input type="checkbox" name='+ cards[j].name+'-'+players[i].name+' />&nbsp;</td>');
+        for(let i=0;i<playersFromServer.length;i++){
+            $('#cluesheet').append('<td><input type="checkbox" name='+ cards[j].name+'-'+playersFromServer[i].name+' />&nbsp;</td>');
         }
         $('#cluesheet').append('</tr>');
     }
@@ -500,9 +517,9 @@ function createClueSheetTable(){
 }
 
 function createMyCardsTable(player){
-    for(let j=0;j<player.name.cards.length;j++){
+    for(let j=0;j<player.cards.length;j++){
         $('#cards').append('<tr>');
-        $('#cards').append('<td>'+player.name.cards[j].name+'</td>');
+        $('#cards').append('<td>'+player.cards[j].name+'</td>');
         $('#cards').append('</tr>');
     }
 }
@@ -517,11 +534,11 @@ function playersTabsTable(players) {
         player_table_html += '</div>';
 
         player_table_html += '<ul class="list-inline mb-0 mt-2 cards-ul">';
-        for(let y =0; y <players[x].name.cards.length;y++){
+        for(let y =0; y <players[x].cards.length;y++){
             player_table_html += '<li class="list-inline-item">' +
                 // For blur card add and remove "blur" class
                 '<div class="card-div blur">' +
-                players[x].name.cards[y].name +
+                players[x].cards[y].name +
                 '</div>' +
                 '</li>';
         }
@@ -532,10 +549,10 @@ function playersTabsTable(players) {
         player_table_html +=
             '<td><div class="media align-items-center">'+
             '<div class="imgDiv avatar d-flex ml-1 mr-2">' +
-            '<img class="img" src="images/'+players[x].name.playerCharacterObject.name+'.jpg" =""/>' +
+            '<img class="img" src="images/'+players[x].playerCharacterObject.name+'.jpg" =""/>' +
             '</div>'+
             '<div class="media-body">' +
-            '<div>'+players[x].name.playerCharacterObject.name+'</div>' +
+            '<div>'+players[x].playerCharacterObject.name+'</div>' +
             '</div>' +
             '</div>' +
             '</td>'+

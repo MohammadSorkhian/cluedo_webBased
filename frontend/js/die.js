@@ -99,6 +99,8 @@ function rollDie(){
     counter++;
     let time = new Date().getTime();
     if(counter>=15){
+
+        diceCount = dieValue;
         clearInterval(diceTimerID);
         counter = 0;
         return;

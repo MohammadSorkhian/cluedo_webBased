@@ -227,30 +227,32 @@ cellar.onload = function() {
 }
 
 
-/* function getMousePosition(canvas, event) {
-    let rect = canvas.getBoundingClientRect();
-    let x = event.offsetX;
-    let y = event.offsetY;
-    console.log("x coords: " + x + ", y coords: " + y);
-                ctx.beginPath();
-                ctx.stroke();
-                console.log(rect);
-                console.log(event.offsetX+" "+event.offsetY);
-                ctx.fillStyle = players[2].playerCharacterObject.color;
-                if(players[2].playerCharacterObject.name =="Mrs. Peacock"){
-                    //ctx.arc(940, 260, 15, 0, 2 * Math.PI);
-                    //ctx.arc(20, 740, 15, 0, 2 * Math.PI);
-                    ctx.arc(x, y, 15, 0, 2 * Math.PI);
-                    //alert('Hello');
-                }
-                ctx.fill();
-                ctx.closePath();
-}
+//  function getMousePosition(canvas, event) {
+//     let rect = canvas.getBoundingClientRect();
+//     let x = event.offsetX;
+//     let y = event.offsetY;
+//     console.log("x coords: " + x + ", y coords: " + y);
+//                 ctx.beginPath();
+//                 ctx.stroke();
+//                 console.log(rect);
+//                 console.log(event.offsetX+" "+event.offsetY);
+//                 ctx.fillStyle = players[2].playerCharacterObject.color;
+//                 if(players[2].playerCharacterObject.name =="Mrs. Peacock"){
+//                     //ctx.arc(940, 260, 15, 0, 2 * Math.PI);
+//                     //ctx.arc(20, 740, 15, 0, 2 * Math.PI);
+//                     ctx.arc(x, y, 15, 0, 2 * Math.PI);
+//                     //alert('Hello');
+//                 }
+//                 ctx.fill();
+//                 ctx.closePath();
+// }
+//
+// canvas.addEventListener("mousedown", function(e)
+// {
+//     getMousePosition(canvas, e);
+// });
 
-canvas.addEventListener("mousedown", function(e)
-{
-    getMousePosition(canvas, e);
-});  */
+
 
 function findPos(obj) {
     var curleft = 0, curtop = 0;
@@ -420,25 +422,28 @@ function layPlayersOnTheBoard(players){
     for(let i=0;i<players.length;i++){
         ctx.beginPath();
         ctx.stroke();
-        ctx.fillStyle = players[i].playerCharacterObject.color;
-        if(players[i].playerCharacterObject.name=="Colonel Mustard"){
-            ctx.arc(940, 260, 15, 0, 2 * Math.PI);
-        }
-        if(players.player[i].playerCharacterObject.name=="Professor Plum"){
-            ctx.arc(20, 220, 15, 0, 2 * Math.PI);
-        }
-        if(players[i].player.playerCharacterObject.name=="Mrs. Peacock"){
-            ctx.arc(20, 740, 15, 0, 2 * Math.PI);
-        }
-        if(players[i].player.playerCharacterObject.name=="Mrs. White"){
-            ctx.arc(580, 940, 15, 0, 2 * Math.PI);
-        }
-        if(players[i].player.playerCharacterObject.name=="Mr Green"){
-            ctx.arc(380, 940, 15, 0, 2 * Math.PI);
-        }
-        if(players[i].player.playerCharacterObject.name=="Miss Scarlet"){
-            ctx.arc(660, 20, 15, 0, 2 * Math.PI);
-        } */
+        //console.log(players[i].playerCharacterObject);
+        ctx.fillStyle = players[i].name.playerCharacterObject.color;
+        //console.log(players[i]);
+        ctx.arc(players[i].canvasX, players[i].canvasY, 15, 0, 2 * Math.PI);
+        /*         if(players[i].playerCharacterObject.name=="Colonel Mustard"){
+                    ctx.arc(940, 260, 15, 0, 2 * Math.PI);
+                }
+                if(players.player[i].playerCharacterObject.name=="Professor Plum"){
+                    ctx.arc(20, 220, 15, 0, 2 * Math.PI);
+                }
+                if(players[i].player.playerCharacterObject.name=="Mrs. Peacock"){
+                    ctx.arc(20, 740, 15, 0, 2 * Math.PI);
+                }
+                if(players[i].player.playerCharacterObject.name=="Mrs. White"){
+                    ctx.arc(580, 940, 15, 0, 2 * Math.PI);
+                }
+                if(players[i].player.playerCharacterObject.name=="Mr Green"){
+                    ctx.arc(380, 940, 15, 0, 2 * Math.PI);
+                }
+                if(players[i].player.playerCharacterObject.name=="Miss Scarlet"){
+                    ctx.arc(660, 20, 15, 0, 2 * Math.PI);
+                } */
         ctx.fill();
         ctx.closePath();
     }

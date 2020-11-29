@@ -255,6 +255,8 @@ class Board {
                     console.log(Character.CharacterSpec[x].position[1]);
                     console.log(Character.CharacterSpec[x].position[0]);
 
+                    console.log(players[y])
+
                     this.BOARD[Character.CharacterSpec[x].position[1]][Character.CharacterSpec[x].position[0]].player = players[y];
 
                     break;

@@ -341,8 +341,6 @@ exports.MovePlayer = (req, res) => {
 
                                         if(boardArray[r][c].player){
 
-                                            console.log(boardArray[r][c].player.id)
-                                            console.log(RequestingPlayer.id)
 
                                             if(boardArray[r][c].player.id === RequestingPlayer.id) {
 

@@ -123,7 +123,7 @@ function RequestToMove(movetorow,movetocol) {
         success: function (result, textStatus, jqXHR) {
 
             if (result.success) {
-                board = result.board;
+
                 console.log(board);
                 rollDice = null;
             }

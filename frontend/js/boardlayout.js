@@ -21,7 +21,7 @@ $( document ).ready(function() {
         },
         success: function (result, textStatus, jqXHR) {
 
-            //console.log(result);
+            console.log(result);
             board = result.board;
             //players = result.players;
             cards = result.cards;
@@ -31,7 +31,7 @@ $( document ).ready(function() {
             createMyCardsTable(players[0]);
             playersTabsTable(players);
 
-            getUpdatedBoard(6);
+            //getUpdatedBoard(6);
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             alert("Error: " + errorThrown);
@@ -41,8 +41,8 @@ $( document ).ready(function() {
 });
 
 function getUpdatedBoard(diceCount) {
-    //players[0].isPlayerTurn = true;
-    if(players[0].name.isPlayerTurn) {
+    console.log(players);
+    if(players[0] != null && players[0].name.isPlayerTurn) {
         $.ajax({
             url: "http://localhost:3000/get-updated-board",
             type: "POST",
@@ -55,7 +55,7 @@ function getUpdatedBoard(diceCount) {
             success: function (result, textStatus, jqXHR) {
 
                 if (result.success) {
-                    console.log(result.board);
+                    console.log(result.board.board);
                     parseBoard(result.board.board);
                 }
                 else {
@@ -79,6 +79,7 @@ function getUpdatedBoard(diceCount) {
             success: function (result, textStatus, jqXHR) {
 
                 if (result.success) {
+                    console.log(result)
                     parseBoard(result.board);
                 } else {
                     console.log(result)
@@ -109,7 +110,7 @@ function RequestToMove(movetorow,movetocol) {
 
             if (result.success) {
                 board = result.board;
-                parseBoard(board);
+                console.log(board);
             }
             else {
 
@@ -316,8 +317,7 @@ function parseBoard(board) {
 draw();
 
 function draw(){
-
-    setInterval(redraw, 5000);
+    setInterval(redraw, 10000);
 
 }
 
@@ -366,7 +366,7 @@ function redraw() {
 }
 
 function highlightTiles(){
-    //console.log(highLightedTiles);
+    console.log(highLightedTiles);
     for(let i=0;i<highLightedTiles.length;i++){
         ctx.beginPath();
         ctx.lineWidth = "6";
@@ -405,7 +405,7 @@ function layPlayersOnTheBoard(players){
         ctx.stroke();
         //console.log(players[i].playerCharacterObject);
         ctx.fillStyle = players[i].name.playerCharacterObject.color;
-        console.log(players[i]);
+        //console.log(players[i]);
         ctx.arc(players[i].canvasX, players[i].canvasY, 15, 0, 2 * Math.PI);
 /*         if(players[i].playerCharacterObject.name=="Colonel Mustard"){
             ctx.arc(940, 260, 15, 0, 2 * Math.PI);

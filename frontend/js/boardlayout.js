@@ -26,7 +26,7 @@ $( document ).ready(function() {
             playersTabsTable(players);
 
             getUpdatedBoard(6);
-            RequestToMove(19,16);
+            RequestToMove(5,6);
 
             setTimeout(function(){  getUpdatedBoard(); }, 20000);
 
@@ -215,7 +215,7 @@ function redraw() {
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
 
-    
+
     for(let i=0;i<960;i+=40){
         for(let j=0;j<960;j+=40){
             ctx.drawImage(tile,i,j);
@@ -255,14 +255,14 @@ function redraw() {
 var myX, myY, xyOn, myMouseX, myMouseY;
 xyOn = true;
 function getXYPosition(e){
-myMouseX=(e||event).clientX;
-myMouseY=(e||event).clientY;
-if (document.documentElement.scrollTop > 0) {
-    myMouseY = myMouseY + document.documentElement.scrollTop;
-}
-if (xyOn) {
-    alert("X is " + myMouseX + "\nY is " + myMouseY);
-}
+    myMouseX=(e||event).clientX;
+    myMouseY=(e||event).clientY;
+    if (document.documentElement.scrollTop > 0) {
+        myMouseY = myMouseY + document.documentElement.scrollTop;
+    }
+    if (xyOn) {
+        alert("X is " + myMouseX + "\nY is " + myMouseY);
+    }
 }
 function toggleXY() {
     xyOn = !xyOn;
@@ -300,54 +300,54 @@ function layPlayersOnTheBoard(players){
         ctx.closePath();
     }
 
-  /*   if(players.length >=1){
-        ctx.beginPath();
-        ctx.arc(940, 260, 15, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fillStyle = "yellow";
-        ctx.fill();
-        ctx.closePath();
-    }
-    if(players.length >=2){
-        ctx.beginPath();
-        ctx.arc(20, 220, 15, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fillStyle = "purple";
-        ctx.fill();
-        ctx.closePath();
-    }
-    if(players.length >=3){
-        ctx.beginPath();
-        ctx.arc(20, 740, 15, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fillStyle = "blue";
-        ctx.fill();
-        ctx.closePath();
-    }
-    if(players.length >=4){
-        ctx.beginPath();
-        ctx.arc(380, 940, 15, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fillStyle = "green";
-        ctx.fill();
-        ctx.closePath();
-    }
-    if(players.length >=4){
-        ctx.beginPath();
-        ctx.arc(580, 940, 15, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fillStyle = "white";
-        ctx.fill();
-        ctx.closePath();
-    }
-    if(players.length >=4){
-        ctx.beginPath();
-        ctx.arc(660, 20, 15, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fillStyle = "red";
-        ctx.fill();
-        ctx.closePath();
-    } */
+    /*   if(players.length >=1){
+          ctx.beginPath();
+          ctx.arc(940, 260, 15, 0, 2 * Math.PI);
+          ctx.stroke();
+          ctx.fillStyle = "yellow";
+          ctx.fill();
+          ctx.closePath();
+      }
+      if(players.length >=2){
+          ctx.beginPath();
+          ctx.arc(20, 220, 15, 0, 2 * Math.PI);
+          ctx.stroke();
+          ctx.fillStyle = "purple";
+          ctx.fill();
+          ctx.closePath();
+      }
+      if(players.length >=3){
+          ctx.beginPath();
+          ctx.arc(20, 740, 15, 0, 2 * Math.PI);
+          ctx.stroke();
+          ctx.fillStyle = "blue";
+          ctx.fill();
+          ctx.closePath();
+      }
+      if(players.length >=4){
+          ctx.beginPath();
+          ctx.arc(380, 940, 15, 0, 2 * Math.PI);
+          ctx.stroke();
+          ctx.fillStyle = "green";
+          ctx.fill();
+          ctx.closePath();
+      }
+      if(players.length >=4){
+          ctx.beginPath();
+          ctx.arc(580, 940, 15, 0, 2 * Math.PI);
+          ctx.stroke();
+          ctx.fillStyle = "white";
+          ctx.fill();
+          ctx.closePath();
+      }
+      if(players.length >=4){
+          ctx.beginPath();
+          ctx.arc(660, 20, 15, 0, 2 * Math.PI);
+          ctx.stroke();
+          ctx.fillStyle = "red";
+          ctx.fill();
+          ctx.closePath();
+      } */
 }
 
 let toggleSheet = document.getElementById('toggleSheet');
@@ -383,24 +383,51 @@ function createMyCardsTable(player){
     }
 }
 function playersTabsTable(players) {
+
     let resume_game_table_prefix_html = '<div class="table-responsive users-table-wrap for-playerTabs"><table class="table table-dark users-table table-hover"><thead><tr><th>Players</th><th>Status</th><th>Characters</th></tr></thead><tbody>';
 
     let player_table_html = resume_game_table_prefix_html;
     let x;
     for (x = 0; x < players.length; x++) {
-        player_table_html += '<tr><td scope="row"><div class="media align-items-center"><div class="imgDiv avatar d-flex ml-1 mr-2"><img class="img" src="https://lh3.googleusercontent.com/prMkp6oKRY4iNucqeZjdplEO4zaeD2KjU6DzruS1PJUzXO_x9xVSZI6Dti6FERItz_8N" alt=""/></div><div class="media-body"><div>' + players[x].username + '</div></div>';
+        player_table_html += '<tr><td scope="row"><div class="media align-items-center"><div class="imgDiv avatar d-flex ml-1 mr-2"><img class="img" src="https://lh3.googleusercontent.com/prMkp6oKRY4iNucqeZjdplEO4zaeD2KjU6DzruS1PJUzXO_x9xVSZI6Dti6FERItz_8N" alt=""/></div><div class="media-body"><div>' + players[x].playerName + '</div></div>';
 
         player_table_html += '</div>';
 
-        player_table_html += '<ul class="list-inline mb-0 mt-2 cards-ul">';
-        for(let y =0; y <players[x].cards.length;y++){
-            player_table_html += '<li class="list-inline-item">' +
-                // For blur card add and remove "blur" class
-                '<div class="card-div blur">' +
-                players[x].cards[y].name +
-                '</div>' +
-                '</li>';
+
+        console.log(JSON.parse(localStorage.getItem("user_data")).data['profile'].username);
+
+        if(JSON.parse(localStorage.getItem("user_data")).data.profile.username === players[x].playerName) {
+
+            player_table_html += '<ul class="list-inline mb-0 mt-2 cards-ul">';
+
+            for (let y = 0; y < players[x].cards.length; y++) {
+                player_table_html +=
+                    '<li class="list-inline-item">' +
+                    // For blur card add and remove "blur" class
+                    '<div class="card-div">' +
+                    players[x].cards[y].name +
+                    '</div>' +
+                    '</li>';
+            }
+
         }
+        else {
+
+            player_table_html += '<ul class="list-inline mb-0 mt-2 cards-ul">';
+
+            for (let y = 0; y < players[x].cards.length; y++) {
+                player_table_html +=
+                    '<li class="list-inline-item">' +
+                    // For blur card add and remove "blur" class
+                    '<div class="card-div blur">' +
+                    players[x].cards[y].name +
+                    '</div>' +
+                    '</li>';
+            }
+
+        }
+
+
         player_table_html += '</ul>'+
             '</td><td><i class="fa fa-check fa-2x text-success" aria-hidden="true"></i>'+
             '</td>';

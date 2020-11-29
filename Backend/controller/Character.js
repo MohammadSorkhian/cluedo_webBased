@@ -2,11 +2,11 @@ const  CharacterSpec = [
 
         {name : 'Colonel Mustard',
         color:"#ffbf00",
-        position:[23,7]  // Col, Row
+        position:[23,6]  // Col, Row
         },
         {name : 'Miss Scarlet',
         color:"#ff0000",
-        position:[16,23] // Col, Row
+        position:[16,0] // Col, Row
         },
         {name : 'Professor Plum',
             color:"#cc0099",

@@ -26,6 +26,10 @@ $( document ).ready(function() {
             playersTabsTable(players);
 
             getUpdatedBoard(6);
+            RequestToMove(19,16);
+
+            setTimeout(function(){  getUpdatedBoard(); }, 20000);
+
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             alert("Error: " + errorThrown);
@@ -102,6 +106,9 @@ function RequestToMove(movetorow,movetocol) {
 
             if (result.success) {
 
+                console.log(result)
+
+                players = result.board.players;
             }
             else {
 

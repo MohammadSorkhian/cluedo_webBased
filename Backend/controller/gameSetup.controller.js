@@ -252,7 +252,7 @@ exports.getUpdatedBoardStates = (req, res) => {
                                                     findThePotentialDestinations4(boardArray,r,c,DiceCount)
 
                                                     res.status(200).send({
-                                                        board : boardArray,
+                                                        board : board,
                                                         success: true
                                                     });
 
@@ -312,7 +312,6 @@ exports.MovePlayer = (req, res) => {
     let RequestingPlayer = req.body.player;
     let moveToRow  = req.body.movetorow;
     let moveToCol  = req.body.movetocol;
-    let DiceCount  = req.body.diceCount;
 
     Game.findOne({'id': game_id}, function (err, game) {
 
@@ -336,50 +335,68 @@ exports.MovePlayer = (req, res) => {
 
                             if(players[x].isPlayerTurn){
 
-                                if(DiceCount){
+                                for(let r=0;r<24;r++){
 
-                                    for(let r=0;r<24;r++){
+                                    for(let c=0;c<24;c++){
 
-                                        for(let c=0;c<24;c++){
+                                        if(boardArray[r][c].player){
 
-                                            if(boardArray[r][c].player){
+                                            console.log(boardArray[r][c].player.id)
+                                            console.log(RequestingPlayer.id)
 
-                                                console.log(boardArray[r][c].player.id)
-                                                console.log(RequestingPlayer.id)
+                                            if(boardArray[r][c].player.id === RequestingPlayer.id) {
 
-                                                if(boardArray[r][c].player.id === RequestingPlayer.id) {
+                                                movePlayer(boardArray,moveToRow,moveToCol,r,c,players);
 
-                                                    if(checkIfMoveIsPossible()) {
+
+                                                var myPromise = () => (
+                                                    new Promise((resolve, reject) => {
+
+                                                        //do something, fetch something....
+                                                        //you guessed it, mongo queries go here.
+
+                                                        BoardModal.updateOne({game_id: board.game_id},
+                                                            {$set: {board: board.board, players : board.players}},
+                                                            {multi: true}, function (err, data) {
+
+                                                                resolve(err,data);
+                                                            })
+
+                                                    })
+                                                );
+
+                                                var callMyPromise = async () => {
+                                                    var result = await (myPromise());
+                                                    return result;
+
+
+                                                };
+
+                                                callMyPromise().then(function(err,result) {
+
+                                                    if(!err){
+                                                        res.status(200).send({
+                                                            board: board,
+                                                            success: true
+                                                        })
+                                                    }else{
 
                                                         res.status(200).send({
-                                                            board: boardArray,
-                                                            success: true
-                                                        });
-                                                    }
-                                                    else{
-
-                                                        res.status(400).send({
-                                                            message: "Move not possible!",
+                                                            message: err,
                                                             success: false
-                                                        });
-
-
+                                                        })
                                                     }
+
                                                     return;
-                                                }
+                                                });
+
+                                                return;
                                             }
-
                                         }
+
                                     }
-
                                 }
-                                else{
-                                    res.status(400).send({
-                                        message: "You need to send the dice count it's your turn",
-                                        success: false
-                                    });
 
-                                }
                             }
 
                             break;
@@ -388,7 +405,7 @@ exports.MovePlayer = (req, res) => {
                     }
 
                     res.status(200).send({
-                        board : boardArray,
+                        board : board,
                         success: true
                     });
 
@@ -412,35 +429,54 @@ exports.MovePlayer = (req, res) => {
     });
 };
 
+function movePlayer(board,moveToRow,moveToCol,playerRow,playerCol,players){
 
-function checkIfMoveIsPossible(board,moveToRow,moveToCol,playerRow,playerCol,diceCount) {
+    board[moveToRow][moveToCol].player  = JSON.parse(JSON.stringify(board[playerRow][playerCol].player));
+    board[moveToRow][moveToCol].player.isPlayerTurn = false;
+    board[playerRow][playerCol].player = null;
 
-    let rowDiff = moveToRow - playerRow;
-    let colDiff = moveToCol - playerCol;
+    // clean all highlightes
 
-    if(rowDiff < 0)
-        rowDiff = rowDiff * -1;
+    for(let r=0;r<24;r++){
 
-    if(colDiff < 0)
-        colDiff = colDiff * -1;
+        for(let c=0;c<24;c++){
 
-    if(colDiff+colDiff > diceCount){
-        return false;
+            board[r][c].highlight = false;
+
+        }
     }
 
-    return  true;
+    // change Turn
+
+    for(let x=0;x<players.length;x++){
+
+        if(players[x].isPlayerTurn === true){
+
+            players[x].isPlayerTurn = false;
+
+            if(x+1 >= players.length){
+                players[0].isPlayerTurn = true;
+            }
+            else{
+                players[x+1].isPlayerTurn = true;
+            }
+
+            break;
+        }
+    }
+
 }
 
 
 
 function findThePotentialDestinations(board,row,col,dice){
 
-    if(row >= 24 || col >= 24 || row < 0 || col < 0  ||dice === 0 || board[row][col].name === 'room'){
+    if(row >= 24 || col >= 24 || row < 0 || col <= 0  ||dice === 0 || board[row][col-1].name !== 'tile'){
         return;
     }
     else{
 
-        board[row][col+1].highlight = true;
+        board[row][col-1].highlight = true;
         findThePotentialDestinations(board,row,col-1,dice-1);
         findThePotentialDestinations2(board,row,col-1,dice-1);
         findThePotentialDestinations3(board,row,col-1,dice-1);
@@ -451,7 +487,7 @@ function findThePotentialDestinations(board,row,col,dice){
 
 function findThePotentialDestinations2(board,row,col,dice){
 
-    if(row >= 24 || col >= 24 || row < 0 || col < 0  ||dice === 0 || board[row][col].name === 'room'){
+    if(row >= 24 || col >= 23 || row < 0 || col < 0  ||dice === 0 || board[row][col+1].name !== 'tile'){
         return;
     }
     else{
@@ -468,12 +504,12 @@ function findThePotentialDestinations2(board,row,col,dice){
 
 function findThePotentialDestinations3(board,row,col,dice){
 
-    if(row >= 24 || col >= 24 || row < 0 || col < 0  ||dice === 0 || board[row][col].name === 'room'){
+    if(row >= 23 || col >= 24 || row < 0 || col < 0  ||dice === 0 || board[row+1][col].name !== 'tile'){
         return;
     }
     else{
 
-        board[row][col+1].highlight = true;
+        board[row+1][col].highlight = true;
         findThePotentialDestinations3(board,row+1,col,dice-1);
         findThePotentialDestinations(board,row+1,col,dice-1);
         findThePotentialDestinations2(board,row+1,col,dice-1);
@@ -485,12 +521,12 @@ function findThePotentialDestinations3(board,row,col,dice){
 
 function findThePotentialDestinations4(board,row,col,dice){
 
-    if(row >= 24 || col >= 24 || row < 0 || col < 0  ||dice === 0 || board[row][col].name === 'room'){
+    if(row >= 23 || col >= 24 || row <= 0 || col < 0  ||dice === 0 || board[row-1][col].name !== 'tile'){
         return;
     }
     else{
 
-        board[row][col+1].highlight = true;
+        board[row-1][col].highlight = true;
         findThePotentialDestinations4(board,row-1,col,dice-1);
         findThePotentialDestinations(board,row-1,col,dice-1);
         findThePotentialDestinations2(board,row-1,col,dice-1);

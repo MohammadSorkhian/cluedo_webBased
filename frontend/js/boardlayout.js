@@ -28,7 +28,7 @@ $( document ).ready(function() {
             getUpdatedBoard(6);
             RequestToMove(19,16);
 
-            setTimeout(function(){  getUpdatedBoard(); }, 10000);
+            setTimeout(function(){  getUpdatedBoard(); }, 20000);
 
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {

@@ -169,10 +169,10 @@ tile.onload = function() {
     }
 }
 
-tile.addEventListener("mousedown", function(e) 
-{ 
+tile.addEventListener("mousedown", function(e)
+{
     //console.log(e);
-}); 
+});
 
 
 var kitchen = new Image();
@@ -227,8 +227,8 @@ cellar.onload = function() {
 }
 
 
-/* function getMousePosition(canvas, event) { 
-    let rect = canvas.getBoundingClientRect(); 
+/* function getMousePosition(canvas, event) {
+    let rect = canvas.getBoundingClientRect();
     let x = event.offsetX;
     let y = event.offsetY;
     console.log("x coords: " + x + ", y coords: " + y);
@@ -245,11 +245,11 @@ cellar.onload = function() {
                 }
                 ctx.fill();
                 ctx.closePath();
-} 
-  
-canvas.addEventListener("mousedown", function(e) 
-{ 
-    getMousePosition(canvas, e); 
+}
+
+canvas.addEventListener("mousedown", function(e)
+{
+    getMousePosition(canvas, e);
 });  */
 
 function findPos(obj) {
@@ -266,14 +266,14 @@ function findPos(obj) {
 
 $('#myCanvas').mouseup(function(e) {
     //const transform = ctx.getTransform();
-    let rect = canvas.getBoundingClientRect(); 
+    let rect = canvas.getBoundingClientRect();
     //let x = ((e.clientX-rect.x)/rect.width)*(960);
     //let y = ((e.clientY-rect.y)/rect.height)*(960);
     for(let i=0;i<highLightedTiles.length;i++){
         let highlightedTile = highLightedTiles[i];
         console.log(highlightedTile,"", e.clientX,e.clientY);
-        if(e.clientX > highLightedTiles[i].boundRect.x 
-            && e.clientY > highLightedTiles[i].boundRect.y 
+        if(e.clientX > highLightedTiles[i].boundRect.x
+            && e.clientY > highLightedTiles[i].boundRect.y
             && e.clientX < highLightedTiles[i].boundRect.width
             && e.clientY < highLightedTiles[i].boundRect.height ) {
                 console.log(highlightedTile);
@@ -324,7 +324,7 @@ function parseBoard(board) {
                 tileXY = new TileXY("room",tile.name,20+(j*40),20+(i*40),j,i,tileRect);
             }
             tiles.push(tileXY);
-        }   
+        }
     }
     //console.log(players);
 }
@@ -342,7 +342,7 @@ function redraw() {
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
 
-    
+
     for(let i=0;i<960;i+=40){
         for(let j=0;j<960;j+=40){
             ctx.drawImage(tile,i,j);
@@ -420,11 +420,8 @@ function layPlayersOnTheBoard(players){
     for(let i=0;i<players.length;i++){
         ctx.beginPath();
         ctx.stroke();
-        //console.log(players[i].playerCharacterObject);
-        ctx.fillStyle = players[i].name.playerCharacterObject.color;
-        //console.log(players[i]);
-        ctx.arc(players[i].canvasX, players[i].canvasY, 15, 0, 2 * Math.PI);
-/*         if(players[i].playerCharacterObject.name=="Colonel Mustard"){
+        ctx.fillStyle = players[i].playerCharacterObject.color;
+        if(players[i].playerCharacterObject.name=="Colonel Mustard"){
             ctx.arc(940, 260, 15, 0, 2 * Math.PI);
         }
         if(players.player[i].playerCharacterObject.name=="Professor Plum"){
@@ -496,6 +493,11 @@ function layPlayersOnTheBoard(players){
     } */
 }
 
+let toggleSheet = document.getElementById('toggleSheet');
+toggleSheet.onclick = function(){
+    // $("#cluesheet").toggle();
+    $("#cards").toggle();
+}
 
 function createClueSheetTable(){
     $('#cluesheet').append('<thead> <tr>');
@@ -524,24 +526,51 @@ function createMyCardsTable(player){
     }
 }
 function playersTabsTable(players) {
+
     let resume_game_table_prefix_html = '<div class="table-responsive users-table-wrap for-playerTabs"><table class="table table-dark users-table table-hover"><thead><tr><th>Players</th><th>Status</th><th>Characters</th></tr></thead><tbody>';
 
     let player_table_html = resume_game_table_prefix_html;
     let x;
     for (x = 0; x < players.length; x++) {
-        player_table_html += '<tr><td scope="row"><div class="media align-items-center"><div class="imgDiv avatar d-flex ml-1 mr-2"><img class="img" src="https://lh3.googleusercontent.com/prMkp6oKRY4iNucqeZjdplEO4zaeD2KjU6DzruS1PJUzXO_x9xVSZI6Dti6FERItz_8N" alt=""/></div><div class="media-body"><div>' + players[x].username + '</div></div>';
+        player_table_html += '<tr><td scope="row"><div class="media align-items-center"><div class="imgDiv avatar d-flex ml-1 mr-2"><img class="img" src="https://lh3.googleusercontent.com/prMkp6oKRY4iNucqeZjdplEO4zaeD2KjU6DzruS1PJUzXO_x9xVSZI6Dti6FERItz_8N" alt=""/></div><div class="media-body"><div>' + players[x].playerName + '</div></div>';
 
         player_table_html += '</div>';
 
-        player_table_html += '<ul class="list-inline mb-0 mt-2 cards-ul">';
-        for(let y =0; y <players[x].cards.length;y++){
-            player_table_html += '<li class="list-inline-item">' +
-                // For blur card add and remove "blur" class
-                '<div class="card-div blur">' +
-                players[x].cards[y].name +
-                '</div>' +
-                '</li>';
+
+        console.log(JSON.parse(localStorage.getItem("user_data")).data['profile'].username);
+
+        if(JSON.parse(localStorage.getItem("user_data")).data.profile.username === players[x].playerName) {
+
+            player_table_html += '<ul class="list-inline mb-0 mt-2 cards-ul">';
+
+            for (let y = 0; y < players[x].cards.length; y++) {
+                player_table_html +=
+                    '<li class="list-inline-item">' +
+                    // For blur card add and remove "blur" class
+                    '<div class="card-div">' +
+                    players[x].cards[y].name +
+                    '</div>' +
+                    '</li>';
+            }
+
         }
+        else {
+
+            player_table_html += '<ul class="list-inline mb-0 mt-2 cards-ul">';
+
+            for (let y = 0; y < players[x].cards.length; y++) {
+                player_table_html +=
+                    '<li class="list-inline-item">' +
+                    // For blur card add and remove "blur" class
+                    '<div class="card-div blur">' +
+                    players[x].cards[y].name +
+                    '</div>' +
+                    '</li>';
+            }
+
+        }
+
+
         player_table_html += '</ul>'+
             '</td><td><i class="fa fa-check fa-2x text-success" aria-hidden="true"></i>'+
             '</td>';

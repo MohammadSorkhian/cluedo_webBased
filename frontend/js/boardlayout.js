@@ -5,6 +5,7 @@ let board = [];
 let tiles = [];
 let highLightedTiles = [];
 let diceCount = null;
+let roomDoors = [];
 
 let Game = JSON.parse(localStorage.getItem('game'));
 
@@ -62,7 +63,7 @@ function getUpdatedBoard(diceCount) {
                 success: function (result, textStatus, jqXHR) {
 
                     if (result.success) {
-
+                        playersFromServer = result.board.players
                         console.log(result.board.board);
                         parseBoard(result.board.board);
                     }
@@ -93,10 +94,12 @@ function getUpdatedBoard(diceCount) {
             success: function (result, textStatus, jqXHR) {
 
                 if (result.success) {
+                    playersFromServer = result.board.players
                     console.log(result)
-                    parseBoard(result.board);
+                    parseBoard(result.board.board);
                 } else {
                     console.log(result)
+                    playersFromServer = result.board.players
                 }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -124,7 +127,8 @@ function RequestToMove(movetorow,movetocol) {
 
             if (result.success) {
 
-                console.log(board);
+                playersFromServer = result.board.players
+                console.log(result.board);
                 rollDice = null;
             }
             else {
@@ -279,7 +283,7 @@ $('#myCanvas').mouseup(function(e) {
             && e.clientX < highLightedTiles[i].boundRect.width
             && e.clientY < highLightedTiles[i].boundRect.height ) {
                 console.log(highlightedTile);
-                RequestToMove(highLightedTiles[i].boardX,highLightedTiles[i].boardY);
+                RequestToMove(highLightedTiles[i].boardY,highLightedTiles[i].boardX);
         }
     }
    //console.log(e.clientX+" "+e.clientY+" page"+e.pageX+" "+e.pageY+" rect "+rect.top+" "+rect.left);
@@ -305,6 +309,7 @@ function parseBoard(board) {
     tiles = [];
     players = [];
     highLightedTiles = [];
+
     let rect = canvas.getBoundingClientRect();
     for(let i=0;i<board.length;i++){
         for(let j=0;j<board[i].length;j++){
@@ -323,10 +328,36 @@ function parseBoard(board) {
                 players.push(tileXY);
             }
             else{
+
                 tileXY = new TileXY("room",tile.name,20+(j*40),20+(i*40),j,i,tileRect);
+
+                let found = false;
+                for(let x=0;x<roomDoors.length;x++){
+                    if(roomDoors[x].name === tile.name){
+                        found = true;
+                        break;
+                    }
+                }
+
+                if(!found && tile.name !== undefined){
+                    let obj = {
+                        name : tile.name,
+                        doorRowIndex : tile.doorRowIndex,
+                        doorColIndex : tile.doorColIndex,
+                        roomObject : tile
+                    };
+                    roomDoors.push(obj);
+
+                    console.log(obj.name+'  '+obj.doorRowIndex+'   '+obj.doorColIndex)
+                    console.log(obj.roomObject)
+                }
+
+
             }
             tiles.push(tileXY);
         }
+
+
     }
     //console.log(players);
 }

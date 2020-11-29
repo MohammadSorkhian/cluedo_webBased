@@ -267,6 +267,7 @@ exports.getUpdatedBoardStates = (req, res) => {
                                 else{
                                     res.status(200).send({
                                         message: "You need to send the dice count it's your turn",
+                                        board : board,
                                         success: false
                                     });
 

@@ -210,7 +210,7 @@ class Board {
 
 
         AllCards = this.shuffle(AllCards)
-        console.log(AllCards)
+        //console.log(AllCards)
         var i=0
         while(AllCards.length!=0){
             if (i % players.length == 0){

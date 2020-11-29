@@ -280,7 +280,7 @@ exports.getUpdatedBoardStates = (req, res) => {
                     }
 
                     res.status(200).send({
-                        board : boardArray,
+                        board : board,
                         success: true
                     });
 

@@ -354,11 +354,14 @@ function parseBoard(board) {
                 }
 
                 if(!found && tile.name !== undefined){
+
+                    let tempTile = board[tile.doorRowIndex][tile.doorColIndex];
                     let obj = {
                         name : tile.name,
                         doorRowIndex : tile.doorRowIndex,
                         doorColIndex : tile.doorColIndex,
-                        roomObject : tile
+                        roomObject : tile,
+                        tilexy : new TileXY("tile",tempTile.name,20+(tile.doorColIndex*40),20+(tile.doorRowIndex*40),tile.doorColIndex,tile.doorRowIndex,tileRect)
                     };
                     roomDoors.push(obj);
 
@@ -469,6 +472,15 @@ function highlightTiles(){
         ctx.lineWidth = "6";
         ctx.strokeStyle = "red";
         ctx.rect(highLightedTiles[i].canvasX - 20, highLightedTiles[i].canvasY - 20, 40, 40);
+        ctx.stroke();
+    }
+
+
+    for(let i=0;i<roomDoors.length;i++){
+        ctx.beginPath();
+        ctx.lineWidth = "6";
+        ctx.strokeStyle = "green";
+        ctx.rect(roomDoors[i].tilexy.canvasX - 20, roomDoors[i].tilexy.canvasY - 20, 40, 40);
         ctx.stroke();
     }
 }

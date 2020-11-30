@@ -282,36 +282,37 @@ $('#myCanvas').mouseup(function(e) {
             && e.clientY > highLightedTiles[i].boundRect.y
             && e.clientX < highLightedTiles[i].boundRect.width
             && e.clientY < highLightedTiles[i].boundRect.height ) {
-                console.log(highlightedTile);
+            console.log(highlightedTile);
 
-                let found = false;
-                for(let x=0;x<roomDoors.length;x++){
+            let found = false;
+            for(let x=0;x<roomDoors.length;x++){
 
-                    if(roomDoors[x].doorRowIndex === highLightedTiles[i].boardY && roomDoors[x].doorColIndex ===highLightedTiles[i].boardX ){
-                          found = true;
-                          RequestToMove(roomDoors[x].roomObject.startRowIndex, roomDoors[x].roomObject.startColumnIndex);
-                          break;
-                    }
+                if(roomDoors[x].doorRowIndex === highLightedTiles[i].boardY && roomDoors[x].doorColIndex ===highLightedTiles[i].boardX ){
+                    found = true;
+                    RequestToMove(roomDoors[x].roomObject.startRowIndex, roomDoors[x].roomObject.startColumnIndex);
+
+                    break;
                 }
+            }
 
-                if(!found)
-                    RequestToMove(highLightedTiles[i].boardY,highLightedTiles[i].boardX);
+            if(!found)
+                RequestToMove(highLightedTiles[i].boardY,highLightedTiles[i].boardX);
         }
     }
-   //console.log(e.clientX+" "+e.clientY+" page"+e.pageX+" "+e.pageY+" rect "+rect.top+" "+rect.left);
-   //console.log(rect);
-   //console.log(x,'-',y);
+    //console.log(e.clientX+" "+e.clientY+" page"+e.pageX+" "+e.pageY+" rect "+rect.top+" "+rect.left);
+    //console.log(rect);
+    //console.log(x,'-',y);
     //ctx.beginPath();
     //ctx.stroke();
     //ctx.fillStyle = 'red';
     //ctx.arc(x, y, 15, 0, 2 * Math.PI);
     //ctx.fillStyle = players[2].playerCharacterObject.color;
     //if(players[2].playerCharacterObject.name =="Mrs. Peacock"){
-        //ctx.arc(940, 260, 15, 0, 2 * Math.PI);
-        //ctx.arc(20, 740, 15, 0, 2 * Math.PI);
-        //ctx.arc(x, y, 15, 0, 2 * Math.PI);
-        //alert('Hello');
-   // }
+    //ctx.arc(940, 260, 15, 0, 2 * Math.PI);
+    //ctx.arc(20, 740, 15, 0, 2 * Math.PI);
+    //ctx.arc(x, y, 15, 0, 2 * Math.PI);
+    //alert('Hello');
+    // }
     //ctx.fill();
     //ctx.closePath();
 });
@@ -369,6 +370,7 @@ function parseBoard(board) {
 
                     console.log(obj.name+'  '+obj.doorRowIndex+'   '+obj.doorColIndex)
                     console.log(obj.roomObject)
+
                 }
 
 
@@ -378,7 +380,33 @@ function parseBoard(board) {
 
 
     }
-    //console.log(players);
+
+
+
+    let found = false;
+    for(let x=0;x<roomDoors.length;x++){
+
+        if(roomDoors[x].roomObject.player != null) {
+            console.log(roomDoors[x].roomObject.player);
+            console.log(JSON.parse(localStorage.getItem("user_data")).data.profile.username);
+            if (roomDoors[x].roomObject.player.playerName === JSON.parse(localStorage.getItem("user_data")).data.profile.username) {
+
+                $('#stay').show();
+
+                if (roomDoors[x].name === 'STUDY' || roomDoors[x].name === 'LOUNGE' || roomDoors[x].name === 'CONSERVATORY' || roomDoors[x].name === 'KITCHEN') {
+                    $('#secret').show();
+                }
+
+                found = true;
+                break;
+            }
+        }
+    }
+
+    if(!found){
+        $('#stay').hide();
+        $('#secret').hide();
+    }
 }
 
 draw();
@@ -450,14 +478,14 @@ function highlightTiles(){
 var myX, myY, xyOn, myMouseX, myMouseY;
 xyOn = true;
 function getXYPosition(e){
-myMouseX=(e||event).clientX;
-myMouseY=(e||event).clientY;
-if (document.documentElement.scrollTop > 0) {
-    myMouseY = myMouseY + document.documentElement.scrollTop;
-}
-if (xyOn) {
-    alert("X is " + myMouseX + "\nY is " + myMouseY);
-}
+    myMouseX=(e||event).clientX;
+    myMouseY=(e||event).clientY;
+    if (document.documentElement.scrollTop > 0) {
+        myMouseY = myMouseY + document.documentElement.scrollTop;
+    }
+    if (xyOn) {
+        alert("X is " + myMouseX + "\nY is " + myMouseY);
+    }
 }
 function toggleXY() {
     xyOn = !xyOn;
@@ -498,54 +526,54 @@ function layPlayersOnTheBoard(players){
         ctx.closePath();
     }
 
-  /*   if(players.length >=1){
-        ctx.beginPath();
-        ctx.arc(940, 260, 15, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fillStyle = "yellow";
-        ctx.fill();
-        ctx.closePath();
-    }
-    if(players.length >=2){
-        ctx.beginPath();
-        ctx.arc(20, 220, 15, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fillStyle = "purple";
-        ctx.fill();
-        ctx.closePath();
-    }
-    if(players.length >=3){
-        ctx.beginPath();
-        ctx.arc(20, 740, 15, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fillStyle = "blue";
-        ctx.fill();
-        ctx.closePath();
-    }
-    if(players.length >=4){
-        ctx.beginPath();
-        ctx.arc(380, 940, 15, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fillStyle = "green";
-        ctx.fill();
-        ctx.closePath();
-    }
-    if(players.length >=4){
-        ctx.beginPath();
-        ctx.arc(580, 940, 15, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fillStyle = "white";
-        ctx.fill();
-        ctx.closePath();
-    }
-    if(players.length >=4){
-        ctx.beginPath();
-        ctx.arc(660, 20, 15, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fillStyle = "red";
-        ctx.fill();
-        ctx.closePath();
-    } */
+    /*   if(players.length >=1){
+          ctx.beginPath();
+          ctx.arc(940, 260, 15, 0, 2 * Math.PI);
+          ctx.stroke();
+          ctx.fillStyle = "yellow";
+          ctx.fill();
+          ctx.closePath();
+      }
+      if(players.length >=2){
+          ctx.beginPath();
+          ctx.arc(20, 220, 15, 0, 2 * Math.PI);
+          ctx.stroke();
+          ctx.fillStyle = "purple";
+          ctx.fill();
+          ctx.closePath();
+      }
+      if(players.length >=3){
+          ctx.beginPath();
+          ctx.arc(20, 740, 15, 0, 2 * Math.PI);
+          ctx.stroke();
+          ctx.fillStyle = "blue";
+          ctx.fill();
+          ctx.closePath();
+      }
+      if(players.length >=4){
+          ctx.beginPath();
+          ctx.arc(380, 940, 15, 0, 2 * Math.PI);
+          ctx.stroke();
+          ctx.fillStyle = "green";
+          ctx.fill();
+          ctx.closePath();
+      }
+      if(players.length >=4){
+          ctx.beginPath();
+          ctx.arc(580, 940, 15, 0, 2 * Math.PI);
+          ctx.stroke();
+          ctx.fillStyle = "white";
+          ctx.fill();
+          ctx.closePath();
+      }
+      if(players.length >=4){
+          ctx.beginPath();
+          ctx.arc(660, 20, 15, 0, 2 * Math.PI);
+          ctx.stroke();
+          ctx.fillStyle = "red";
+          ctx.fill();
+          ctx.closePath();
+      } */
 }
 
 let toggleSheet = document.getElementById('toggleSheet');
@@ -658,9 +686,9 @@ function TileXY(type, name, canvasX, canvasY,boardX,boardY,boundRect) {
     this.boardX = boardX;
     this.boardY = boardY;
     this.boundRect = boundRect;
-  }
+}
 
-  function getBoundingRectForTile(x,y,rect){
+function getBoundingRectForTile(x,y,rect){
     //console.log(rect);
     let boundRectX = (x/960)*(rect.width);
     let boundRectY = (y/960)*(rect.height);
@@ -668,11 +696,11 @@ function TileXY(type, name, canvasX, canvasY,boardX,boardY,boundRect) {
     let boundRectHeight = ((y+40)/960)*(rect.height)+rect.y;
     let boundRect = new BoundingRect(boundRectX,boundRectY,boundRectWidth,boundRectHeight);
     return boundRect;
-  }
+}
 
-  function BoundingRect(x,y,width,height){
+function BoundingRect(x,y,width,height){
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
-  }
+}

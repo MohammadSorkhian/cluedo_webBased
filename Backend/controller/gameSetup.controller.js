@@ -428,6 +428,130 @@ exports.MovePlayer = (req, res) => {
     });
 };
 
+
+exports.StayInRoom = (req, res) => {
+
+    let game_id = req.body.game_id;
+    let RequestingPlayer = req.body.player;
+
+    Game.findOne({'id': game_id}, function (err, game) {
+
+        if (game) {
+
+            BoardModal.findOne({'game_id': game_id}, function (err, board) {
+
+                if (board) {
+
+                    let players = null;
+                    let boardArray = null;
+
+                    // CHECK IF THIS IS THE CURRENT PLAYER TURN
+
+                    players = board.players;
+                    boardArray = board.board;
+
+                    for (let x = 0; x < players.length; x++) {
+
+                        if (players[x].id === RequestingPlayer.id) {
+
+                            if(players[x].isPlayerTurn){
+
+                                for(let r=0;r<24;r++){
+
+                                    for(let c=0;c<24;c++){
+
+                                        if(boardArray[r][c].player){
+
+
+                                            if(boardArray[r][c].player.id === RequestingPlayer.id) {
+
+                                                movePlayer(boardArray,moveToRow,moveToCol,r,c,players);
+
+
+                                                var myPromise = () => (
+                                                    new Promise((resolve, reject) => {
+
+                                                        //do something, fetch something....
+                                                        //you guessed it, mongo queries go here.
+
+                                                        BoardModal.updateOne({game_id: board.game_id},
+                                                            {$set: {board: board.board, players : board.players}},
+                                                            {multi: true}, function (err, data) {
+
+                                                                resolve(err,data);
+                                                            })
+
+                                                    })
+                                                );
+
+                                                var callMyPromise = async () => {
+                                                    var result = await (myPromise());
+                                                    return result;
+
+
+                                                };
+
+                                                callMyPromise().then(function(err,result) {
+
+                                                    if(!err){
+                                                        res.status(200).send({
+                                                            board: board,
+                                                            success: true
+                                                        })
+                                                    }else{
+
+                                                        res.status(200).send({
+                                                            message: err,
+                                                            success: false
+                                                        })
+                                                    }
+
+                                                    return;
+                                                });
+
+                                                return;
+                                            }
+                                        }
+
+                                    }
+                                }
+
+                            }
+
+                            break;
+                        }
+
+                    }
+
+                    res.status(200).send({
+                        board : board,
+                        success: true
+                    });
+
+                }
+                else {
+                    res.status(400).send({
+                        message: "Bad request",
+                        success: false
+                    });
+                }
+            });
+
+        }
+        else {
+            res.status(400).send({
+                message: err,
+                success: false
+            });
+        }
+
+    });
+};
+
+
+
+
+
 function movePlayer(board,moveToRow,moveToCol,playerRow,playerCol,players){
 
     board[moveToRow][moveToCol].player  = JSON.parse(JSON.stringify(board[playerRow][playerCol].player));

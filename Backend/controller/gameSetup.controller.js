@@ -465,7 +465,7 @@ exports.StayInRoom = (req, res) => {
 
                                             if(boardArray[r][c].player.id === RequestingPlayer.id) {
 
-                                                movePlayer(boardArray,moveToRow,moveToCol,r,c,players);
+                                                changeTurnToNextPlayer(boardArray,r,c,players);
 
 
                                                 var myPromise = () => (
@@ -551,6 +551,305 @@ exports.StayInRoom = (req, res) => {
 
 
 
+exports.takeSecratePessage = (req, res) => {
+
+    let game_id = req.body.game_id;
+    let RequestingPlayer = req.body.player;
+
+    Game.findOne({'id': game_id}, function (err, game) {
+
+        if (game) {
+
+            BoardModal.findOne({'game_id': game_id}, function (err, board) {
+
+                if (board) {
+
+                    let players = null;
+                    let boardArray = null;
+
+                    // CHECK IF THIS IS THE CURRENT PLAYER TURN
+
+                    players = board.players;
+                    boardArray = board.board;
+
+                    for (let x = 0; x < players.length; x++) {
+
+                        if (players[x].id === RequestingPlayer.id) {
+
+                            if(players[x].isPlayerTurn){
+
+                                for(let r=0;r<24;r++){
+
+                                    for(let c=0;c<24;c++){
+
+                                        if(boardArray[r][c].player){
+
+
+                                            if(boardArray[r][c].player.id === RequestingPlayer.id) {
+
+                                                takepessage(boardArray,r,c,players);
+
+
+                                                var myPromise = () => (
+                                                    new Promise((resolve, reject) => {
+
+                                                        //do something, fetch something....
+                                                        //you guessed it, mongo queries go here.
+
+                                                        BoardModal.updateOne({game_id: board.game_id},
+                                                            {$set: {board: board.board, players : board.players}},
+                                                            {multi: true}, function (err, data) {
+
+                                                                resolve(err,data);
+                                                            })
+
+                                                    })
+                                                );
+
+                                                var callMyPromise = async () => {
+                                                    var result = await (myPromise());
+                                                    return result;
+
+
+                                                };
+
+                                                callMyPromise().then(function(err,result) {
+
+                                                    if(!err){
+                                                        res.status(200).send({
+                                                            board: board,
+                                                            success: true
+                                                        })
+                                                    }else{
+
+                                                        res.status(200).send({
+                                                            message: err,
+                                                            success: false
+                                                        })
+                                                    }
+
+                                                    return;
+                                                });
+
+                                                return;
+                                            }
+                                        }
+
+                                    }
+                                }
+
+                            }
+
+                            break;
+                        }
+
+                    }
+
+                    res.status(200).send({
+                        board : board,
+                        success: true
+                    });
+
+                }
+                else {
+                    res.status(400).send({
+                        message: "Bad request",
+                        success: false
+                    });
+                }
+            });
+
+        }
+        else {
+            res.status(400).send({
+                message: err,
+                success: false
+            });
+        }
+
+    });
+};
+
+
+function takepessage(board,playerRow,playerCol,players){
+
+
+    if(board[playerRow][playerCol].name === 'Study'){
+
+        for(let r=0;r<board.length;r++){
+
+            let found = false;
+
+            for(let c=0;c<board[r].length;c++){
+
+                if(board[r][c].name === 'KITCHEN'){
+
+
+                    board[board[r][c].startRowIndex][board[r][c].startColumnIndex].player  = JSON.parse(JSON.stringify(board[playerRow][playerCol].player));
+                    board[board[r][c].startRowIndex][board[r][c].startColumnIndex].player.isPlayerTurn = false;
+                    board[playerRow][playerCol].player = null;
+                    found = true;
+                    break;
+                }
+
+            }
+
+            if(found){
+                break;
+            }
+        }
+
+    }
+    else if(board[playerRow][playerCol].name === 'KITCHEN'){
+
+        for(let r=0;r<board.length;r++){
+
+            let found = false;
+
+            for(let c=0;c<board[r].length;c++){
+
+                if(board[r][c].name === 'Study'){
+
+                    board[board[r][c].startRowIndex][board[r][c].startColumnIndex].player  = JSON.parse(JSON.stringify(board[playerRow][playerCol].player));
+                    board[board[r][c].startRowIndex][board[r][c].startColumnIndex].player.isPlayerTurn = false;
+                    board[playerRow][playerCol].player = null;
+                    found = true;
+                    break;
+                }
+
+            }
+
+            if(found){
+                break;
+            }
+        }
+
+    }
+    else if(board[playerRow][playerCol].name === 'LOUNGE'){
+
+        for(let r=0;r<board.length;r++){
+
+            let found = false;
+
+            for(let c=0;c<board[r].length;c++){
+
+                if(board[r][c].name === 'CONSERVATORY'){
+
+
+
+                    board[board[r][c].startRowIndex][board[r][c].startColumnIndex].player  = JSON.parse(JSON.stringify(board[playerRow][playerCol].player));
+                    board[board[r][c].startRowIndex][board[r][c].startColumnIndex].player.isPlayerTurn = false;
+                    board[playerRow][playerCol].player = null;
+                    found = true;
+                    break;
+                }
+
+            }
+
+            if(found){
+                break;
+            }
+        }
+
+    }
+    else if(board[playerRow][playerCol].name === 'CONSERVATORY'){
+
+        for(let r=0;r<board.length;r++){
+
+            let found = false;
+
+            for(let c=0;c<board[r].length;c++){
+
+                if(board[r][c].name === 'LOUNGE'){
+
+                    board[board[r][c].startRowIndex][board[r][c].startColumnIndex].player  = JSON.parse(JSON.stringify(board[playerRow][playerCol].player));
+                    board[board[r][c].startRowIndex][board[r][c].startColumnIndex].player.isPlayerTurn = false;
+                    board[playerRow][playerCol].player = null;
+                    found = true;
+                    break;
+                }
+
+            }
+
+            if(found){
+                break;
+            }
+        }
+
+    }
+    else{
+        return false;
+    }
+
+    // clean all highlightes
+
+    for(let r=0;r<24;r++){
+
+        for(let c=0;c<24;c++){
+
+            board[r][c].highlight = false;
+
+        }
+    }
+
+    // change Turn
+
+    for(let x=0;x<players.length;x++){
+
+        if(players[x].isPlayerTurn === true){
+
+            players[x].isPlayerTurn = false;
+
+            if(x+1 >= players.length){
+                players[0].isPlayerTurn = true;
+            }
+            else{
+                players[x+1].isPlayerTurn = true;
+            }
+
+            break;
+        }
+    }
+
+    return true;
+}
+
+
+function changeTurnToNextPlayer(board,playerRow,playerCol,players){
+
+    board[playerRow][playerCol].player.isPlayerTurn = false;
+
+    // clean all highlightes
+
+    for(let r=0;r<24;r++){
+
+        for(let c=0;c<24;c++){
+
+            board[r][c].highlight = false;
+
+        }
+    }
+
+    // change Turn
+
+    for(let x=0;x<players.length;x++){
+
+        if(players[x].isPlayerTurn === true){
+
+            players[x].isPlayerTurn = false;
+
+            if(x+1 >= players.length){
+                players[0].isPlayerTurn = true;
+            }
+            else{
+                players[x+1].isPlayerTurn = true;
+            }
+
+            break;
+        }
+    }
+
+}
 
 function movePlayer(board,moveToRow,moveToCol,playerRow,playerCol,players){
 
@@ -595,6 +894,7 @@ function movePlayer(board,moveToRow,moveToCol,playerRow,playerCol,players){
 function findThePotentialDestinations(board,row,col,dice){
 
     if(row >= 24 || col >= 24 || row < 0 || col <= 0  ||dice === 0 || board[row][col-1].name !== 'tile'){
+
         return;
     }
     else{
@@ -644,7 +944,7 @@ function findThePotentialDestinations3(board,row,col,dice){
 
 function findThePotentialDestinations4(board,row,col,dice){
 
-    if(row >= 23 || col >= 24 || row <= 0 || col < 0  ||dice === 0 || board[row-1][col].name !== 'tile'){
+    if(row >= 24 || col >= 24 || row <= 0 || col < 0  ||dice === 0 || board[row-1][col].name !== 'tile'){
         return;
     }
     else{

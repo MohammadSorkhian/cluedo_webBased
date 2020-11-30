@@ -103,6 +103,7 @@ function rollDie(){
         diceCount = dieValue;
         clearInterval(diceTimerID);
         counter = 0;
+        dieValue = 0;
         return;
     }
 }

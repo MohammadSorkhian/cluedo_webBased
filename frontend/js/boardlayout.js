@@ -40,6 +40,12 @@ $( document ).ready(function() {
     });
 
 
+    $("#stay").on( 'click', StayInRoom );
+    $("#secret").on( 'click', takePessage );
+
+
+
+
 });
 
 function getUpdatedBoard(diceCount) {
@@ -140,6 +146,70 @@ function RequestToMove(movetorow,movetocol) {
         }
     });
 }
+
+
+function StayInRoom() {
+
+    // ON FRONT END PLEASE DO CHECK IF THE MOVE IS POSSIBLE OR NOT
+
+    $.ajax({
+        url: "http://localhost:3000/stay-in-room",
+        type: "POST",
+        data: {
+            game_id: Game.id,
+            player: JSON.parse(localStorage.getItem("user_data")).data.profile,
+        },
+        success: function (result, textStatus, jqXHR) {
+
+            if (result.success) {
+
+                playersFromServer = result.board.players
+                console.log(result.board);
+                rollDice = null;
+
+                console.log(result)
+            }
+            else {
+
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert("Error: " + errorThrown.toString() + ' ' + textStatus.toString());
+        }
+    });
+}
+
+function takePessage() {
+
+    // ON FRONT END PLEASE DO CHECK IF THE MOVE IS POSSIBLE OR NOT
+
+    $.ajax({
+        url: "http://localhost:3000/take-secrate-pessage",
+        type: "POST",
+        data: {
+            game_id: Game.id,
+            player: JSON.parse(localStorage.getItem("user_data")).data.profile,
+        },
+        success: function (result, textStatus, jqXHR) {
+
+            if (result.success) {
+
+                playersFromServer = result.board.players
+                console.log(result.board);
+                rollDice = null;
+
+                console.log(result)
+            }
+            else {
+
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert("Error: " + errorThrown.toString() + ' ' + textStatus.toString());
+        }
+    });
+}
+
 
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
@@ -466,6 +536,16 @@ function redraw() {
 }
 
 function highlightTiles(){
+
+
+    for(let i=0;i<roomDoors.length;i++){
+        ctx.beginPath();
+        ctx.lineWidth = "6";
+        ctx.strokeStyle = "green";
+        ctx.rect(roomDoors[i].tilexy.canvasX - 20, roomDoors[i].tilexy.canvasY - 20, 40, 40);
+        ctx.stroke();
+    }
+
     console.log(highLightedTiles);
     for(let i=0;i<highLightedTiles.length;i++){
         ctx.beginPath();
@@ -476,13 +556,6 @@ function highlightTiles(){
     }
 
 
-    for(let i=0;i<roomDoors.length;i++){
-        ctx.beginPath();
-        ctx.lineWidth = "6";
-        ctx.strokeStyle = "green";
-        ctx.rect(roomDoors[i].tilexy.canvasX - 20, roomDoors[i].tilexy.canvasY - 20, 40, 40);
-        ctx.stroke();
-    }
 }
 
 

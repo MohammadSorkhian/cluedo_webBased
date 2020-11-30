@@ -674,7 +674,7 @@ exports.takeSecratePessage = (req, res) => {
 function takepessage(board,playerRow,playerCol,players){
 
 
-    if(board[playerRow][playerCol].name === 'Study'){
+    if(board[playerRow][playerCol].name === 'STUDY'){
 
         for(let r=0;r<board.length;r++){
 
@@ -708,7 +708,7 @@ function takepessage(board,playerRow,playerCol,players){
 
             for(let c=0;c<board[r].length;c++){
 
-                if(board[r][c].name === 'Study'){
+                if(board[r][c].name === 'STUDY'){
 
                     board[board[r][c].startRowIndex][board[r][c].startColumnIndex].player  = JSON.parse(JSON.stringify(board[playerRow][playerCol].player));
                     board[board[r][c].startRowIndex][board[r][c].startColumnIndex].player.isPlayerTurn = false;

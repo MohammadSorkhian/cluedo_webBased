@@ -10,15 +10,15 @@ const  CharacterSpec = [
         },
         {name : 'Professor Plum',
             color:"#cc0099",
-            position:[0,6] // Col, Row
+            position:[0,8] // Col, Row
         },
         {name : 'Mr Green',
             color:"#00b33c",
-            position:[8,22] // Col, Row
+            position:[8,21] // Col, Row
         },
         {name : 'Mrs. White',
             color:"#f2f2f2",
-            position:[15,24] // Col, Row
+            position:[16,14] // Col, Row
         },
         {name : 'Mrs. Peacock',
             color:"#4d4dff",

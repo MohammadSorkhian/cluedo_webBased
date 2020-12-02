@@ -53,6 +53,76 @@ exports.loginUser = (req, res) => {
     });
 
 };
+
+// Create Dummy User
+exports.createLogin = (req, res) => {
+
+    var testUser = new User({
+        id: 1,
+        username: 'miaftab',
+        password: 'example@1234'
+    });
+
+    testUser.save(function (err) {
+        if (err) throw err;
+    });
+
+    testUser = new User({
+        id: 2,
+        username: 'moso',
+        password: 'example@1234'
+    });
+
+    testUser.save(function (err) {
+        if (err) throw err;
+    });
+
+    testUser = new User({
+        id: 3,
+        username: 'nishant',
+        password: 'example@1234'
+    });
+
+    testUser.save(function (err) {
+        if (err) throw err;
+    });
+
+    testUser = new User({
+        id: 4,
+        username: 'swati',
+        password: 'example@1234'
+    });
+
+    testUser.save(function (err) {
+        if (err) throw err;
+    });
+
+    testUser = new User({
+        id: 5,
+        username: 'prasun',
+        password: 'example@1234'
+    });
+
+    testUser.save(function (err) {
+        if (err) throw err;
+    });
+
+    testUser = new User({
+        id: 6,
+        username: 'adnan',
+        password: 'example@1234'
+    });
+
+    testUser.save(function (err) {
+        if (err) throw err;
+    });
+
+    res.status(200).send({
+        message: "Users created Successfully"
+    });
+
+};
+
 // Associate Friends
 exports.associateFriendsInAllDB = (req, res) => {
 

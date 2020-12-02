@@ -53,3 +53,39 @@ exports.loginUser = (req, res) => {
     });
 
 };
+// Associate Friends
+exports.associateFriendsInAllDB = (req, res) => {
+
+    User.find(function (err, users) {
+        if (err) {
+            res.status(500).send({
+                message: "unable to fetch all users from db"
+            });
+        }
+
+        for (let x = 0; x < users.length; x++) {
+
+            for (let y = 0; y < users.length; y++) {
+
+                if (users[x].id !== users[y].id) {
+
+                    let friend = new Friends({
+                        user_id: users[x].id,
+                        friend_id: users[y].id
+                    });
+
+                    friend.save(function (err) {
+                        if (err) throw err;
+
+                    });
+                }
+            }
+        }
+
+        res.status(200).send({
+            message: "Friends Associated Successfully"
+        });
+
+    });
+
+};

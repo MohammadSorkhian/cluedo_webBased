@@ -34,7 +34,7 @@ class Board {
             }
         }
 
- // SET UP HALL ROOM
+       // SET UP HALL ROOM
         let hall = new Room('HALL',0,6,9,14,7,12);
         for(let r=hall.startRowIndex;r<=hall.endRowIndex;r++){
             for(let c=hall.startColumnIndex;c<=hall.endColumnIndex;c++){
@@ -80,6 +80,47 @@ class Board {
         }
 
         this.BOARD[19][5] =  new Tile();
+		
+		// SET UP DINNING ROOM
+        let dinning = new Room('DINNING',8,15,17,23,15,18);
+        for(let r=dinning.startRowIndex;r<=dinning.endRowIndex;r++){
+            for(let c=dinning.startColumnIndex;c<=dinning.endColumnIndex;c++){
+                this.BOARD[r][c] = dinning;
+            }
+        }
+
+        this.BOARD[15][17] =  new Tile();
+        this.BOARD[15][18] =  new Tile();
+        this.BOARD[15][19] =  new Tile();
+
+
+        // SET UP KITCHEN ROOM
+        let kitchen = new Room('KITCHEN',18,23,18,23,17,23);
+        for(let r=kitchen.startRowIndex;r<=kitchen.endRowIndex;r++){
+            for(let c=kitchen.startColumnIndex;c<=kitchen.endColumnIndex;c++){
+                this.BOARD[r][c] = kitchen;
+            }
+        }
+
+        // SET UP BALLROOM
+        let ballroom = new Room('BALLROOM',16,23,8,15,22,15);
+        for(let r=ballroom.startRowIndex;r<=ballroom.endRowIndex;r++){
+            for(let c=ballroom.startColumnIndex;c<=ballroom.endColumnIndex;c++){
+                this.BOARD[r][c] = ballroom;
+            }
+        }
+
+        this.BOARD[22][8] =  new Tile();
+        this.BOARD[22][9] =  new Tile();
+
+        this.BOARD[23][8] =  new Tile();
+        this.BOARD[23][9] =  new Tile();
+
+        this.BOARD[22][14] =  new Tile();
+        this.BOARD[22][15] =  new Tile();
+
+        this.BOARD[23][14] =  new Tile();
+        this.BOARD[23][15] =  new Tile();
 		
     generateNewBoard(numberOfPlayers,players){
 

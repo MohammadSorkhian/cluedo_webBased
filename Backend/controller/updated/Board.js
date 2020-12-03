@@ -26,7 +26,21 @@ class Board {
             }
         }
     }
+// SET UP STUDY ROOM
+        let study = new Room('STUDY',0,3,0,6,4,6);
+        for(let r=study.startRowIndex;r<=study.endRowIndex;r++){
+            for(let c=study.startColumnIndex;c<=study.endColumnIndex;c++){
+                this.BOARD[r][c] = study;
+            }
+        }
 
+        // SET UP HALL ROOM
+        let hall = new Room('HALL',0,6,9,14,7,12);
+        for(let r=hall.startRowIndex;r<=hall.endRowIndex;r++){
+            for(let c=hall.startColumnIndex;c<=hall.endColumnIndex;c++){
+                this.BOARD[r][c] = hall;
+            }
+        }
     generateNewBoard(numberOfPlayers,players){
 
        

@@ -82,7 +82,7 @@ function rollDie(){
     const cxt = dieCanvas.getContext('2d');
     //cxt.clearRect(0, 0, dieCanvas.width, dieCanvas.height);
 
-    var dieValue = Math.floor(Math.random()*6) + 1; 
+    var dieValue = Math.floor(Math.random()*12) + 1; 
 
     let x = (rectWidth - rectX)/2 + rectX;
     let y = (rectHeight - rectY)/2 + rectY + 10;
@@ -95,6 +95,7 @@ function rollDie(){
     context.fillStyle = "white";
     context.textAlign = "center";
     context.fillText(dieValue, x, y);
+    context.shadowBlur = 0;
 
     counter++;
     let time = new Date().getTime();

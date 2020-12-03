@@ -18,6 +18,8 @@ module.exports = (app) => {
     app.post('/move-player', gameSetup.MovePlayer);
     app.post('/stay-in-room', gameSetup.StayInRoom);
     app.post('/take-secrate-pessage', gameSetup.takeSecratePessage);
+    app.post('/get-the-latest-board', gameSetup.getTheLatestBoard);
 
     app.post('/get-game', gameSetup.getGame);
+    app.post('/get-game-model', gameSetup.getGameModel);
 }

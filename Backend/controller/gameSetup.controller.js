@@ -178,6 +178,7 @@ exports.startGame = (req, res) => {
 };
 
 exports.getGame = (req, res) => {
+
     let game_id = req.body.game_id;
 
     BoardModal.findOne({'game_id': game_id}, function (err, board) {
@@ -190,6 +191,81 @@ exports.getGame = (req, res) => {
                 success: true
             });
         } else {
+            res.status(400).send({
+                message: "Bad request",
+                success: false
+            });
+        }
+    });
+
+};
+
+exports.getGameModel = (req, res) => {
+
+    let game_id = req.body.game_id;
+
+    Game.findOne({'id': game_id}, function (err, game) {
+
+        if (game) {
+
+            res.status(200).send({
+                game: game,
+                success: true
+            });
+        }
+        else {
+            res.status(400).send({
+                message: "Bad request",
+                success: false
+            });
+        }
+    });
+
+};
+
+// check if user is playing in any game
+
+exports.getTheLatestBoard = (req, res) => {
+
+    let player = req.body.player;
+
+    BoardModal.find({}, function (err, board) {
+
+        if (board) {
+
+            console.log(board)
+
+            for(let x=0;x<board.length;x++) {
+
+                console.log(board[x].players)
+                console.log(player)
+
+
+                for(let y=0;y<board[x].players.length;y++) {
+
+                    if(board[x].players[y].id === player.id) {
+
+                        res.status(200).send({
+                            board: board[board.length - 1].board,
+                            players: board[board.length - 1].players,
+                            cards: board[board.length - 1].cards,
+                            game_id: board[board.length - 1].game_id,
+                            success: true
+                        });
+
+                        return;
+                    }
+
+                }
+
+                res.status(200).send({
+                    success: false
+                });
+
+                return;
+            }
+        }
+        else {
             res.status(400).send({
                 message: "Bad request",
                 success: false

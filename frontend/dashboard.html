@@ -155,8 +155,67 @@
     let Game = null;
 
     $(document).ready(function () {
+
         let user_data = localStorage.getItem('user_data');
         user_data = JSON.parse(user_data);
+
+        $.ajax({
+            url: "http://localhost:3000/get-the-latest-board",
+            type: "POST",
+            data: {
+                player: user_data.data.profile,
+            },
+            success: function (game, textStatus, jqXHR) {
+
+                if(game.success){
+
+                    localStorage.setItem('board', JSON.stringify(game.board))
+                    $('#alertResumeGame').modal('hide');
+
+
+
+                    $.ajax({
+                        url: "http://localhost:3000/get-game-model",
+                        type: "POST",
+                        data: {
+                            game_id: game.game_id,
+                        },
+                        success: function (Games, textStatus, jqXHR) {
+
+                            if(Games.success){
+
+                                localStorage.setItem('game', JSON.stringify(Games.game));
+                                $('#alertResumeGame').modal('hide');
+                                window.location.replace("board.html");
+                            }
+                            else{
+
+
+                            }
+
+                            console.log(game)
+
+
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert("Error: " + errorThrown);
+                        }
+                    });
+                }
+                else{
+
+
+                }
+
+                console.log(game)
+
+
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error: " + errorThrown);
+            }
+        });
+
 
         let friends_ids = user_data.data.friends;
         let friends_ids_array = [];
@@ -165,6 +224,7 @@
         for (i = 0; i < friends_ids.length; ++i) {
             friends_ids_array.push(friends_ids[i].friend_id);
         }
+
 
         if (friends_ids_array.length > 0) {
             $.ajax({

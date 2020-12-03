@@ -6,6 +6,7 @@ let tiles = [];
 let highLightedTiles = [];
 let diceCount = null;
 let roomDoors = [];
+let currentPlayerIndex = 0;
 
 let Game = JSON.parse(localStorage.getItem('game'));
 
@@ -31,8 +32,20 @@ $( document ).ready(function() {
 
             parseBoard(board);
             createClueSheetTable();
-            createMyCardsTable(playersFromServer[0]);
-            playersTabsTable(playersFromServer);
+
+            for(let x=0;x<playersFromServer.length;x++) {
+
+                let id = JSON.parse(localStorage.getItem("user_data")).data.profile.id;
+                if(parseInt(playersFromServer[x].id) === id) {
+
+                    currentPlayerIndex = x;
+                    createMyCardsTable(playersFromServer[x]);
+                    playersTabsTable(playersFromServer);
+                    break;
+                }
+            }
+
+
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             alert("Error: " + errorThrown);
@@ -51,7 +64,9 @@ $( document ).ready(function() {
 function getUpdatedBoard(diceCount) {
 
 
-    if(playersFromServer != null && playersFromServer[0].isPlayerTurn) {
+
+
+    if(playersFromServer != null && playersFromServer[currentPlayerIndex].isPlayerTurn) {
 
         if(diceCount != null) {
 
@@ -462,9 +477,11 @@ function parseBoard(board) {
         if(roomDoors[x].roomObject.player != null) {
             console.log(roomDoors[x].roomObject.player);
             console.log(JSON.parse(localStorage.getItem("user_data")).data.profile.username);
+
             if (roomDoors[x].roomObject.player.playerName === JSON.parse(localStorage.getItem("user_data")).data.profile.username) {
 
                 $('#stay').show();
+                $('#suggestion').show();
 
                 if (roomDoors[x].name === 'STUDY' || roomDoors[x].name === 'LOUNGE' || roomDoors[x].name === 'CONSERVATORY' || roomDoors[x].name === 'KITCHEN') {
                     $('#secret').show();
@@ -479,6 +496,7 @@ function parseBoard(board) {
     if(!found){
         $('#stay').hide();
         $('#secret').hide();
+        $('#suggestion').hide();
     }
 }
 
